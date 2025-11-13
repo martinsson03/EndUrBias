@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
+// Contains next js configs.
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+
 };
 
 export default nextConfig;

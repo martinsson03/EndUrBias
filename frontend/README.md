@@ -1,24 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EYB - End Your Bias
+This project is a web GUI for an HR tool that censors details on resumes to allow candidate selection to be un-biased. This is a next.js project bootstrapped using the CLI tool: create-next-app with npx.
 
 ## Getting Started
 
-First, run the development server:
+To install all the dependencies that are used in this project, make sure you have NPM - Node Package Manager installed (comes with node.js), which you can check by running and checking that it found the program:
+
+```bash
+npm
+```
+
+If not, install node.js here: [link](https://nodejs.org/en/download).
+
+When you've installed NPM, run this command to download all the node modules needed for this project. Make sure that the working directory is set to: frontend/ before running the command.
+
+```bash
+npm install
+```
+
+After you've installed all the node modules, you can now run the project using:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
@@ -26,11 +31,3 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
