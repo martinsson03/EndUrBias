@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+/* Light mode: */
+@theme static {
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Dark mode: */
+  @theme static {
+
+  }
+}
