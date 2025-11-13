@@ -14,7 +14,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
     <html lang="en">
       <body>
         <Header></Header>
-        {children}
+        <div className="margin-responsive">{children}</div>
       </body>
     </html>
   );

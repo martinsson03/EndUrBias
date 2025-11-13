@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@import "../../styles/fonts.css";
 
 /* Light mode: */
 @theme static {
-  
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -10,4 +11,8 @@
   @theme static {
 
   }
+}
+
+.margin-responsive {
+  @apply ml-5 mr-5 md:ml-30 md:mr-30;
 }
