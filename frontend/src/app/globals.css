@@ -3,7 +3,7 @@
 
 /* Light mode: */
 @theme static {
-
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,4 +15,8 @@
 
 .margin-responsive {
   @apply ml-5 mr-5 md:ml-30 md:mr-30;
+}
+
+.padding-responsive {
+  @apply pl-5 pr-5 md:pl-30 md:pr-30;
 }
