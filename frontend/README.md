@@ -25,6 +25,10 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Troubleshooting
+### Turbopack error
+If you get a Turbopack error make sure that the file path to the project doesn't contain any swedish letters since Turbopack only works with the english alphabet.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
