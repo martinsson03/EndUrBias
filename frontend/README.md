@@ -29,6 +29,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Turbopack error
 If you get a Turbopack error make sure that the file path to the project doesn't contain any swedish letters since Turbopack only works with the english alphabet.
 
+## VS Code extensions
+If you want a pleasent experience when developing this project using VS Code, I would recommend this extension:
+
+* [Tailwind CSS Intellisense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) - Code completion for tailwind.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
