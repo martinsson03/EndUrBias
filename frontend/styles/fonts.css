@@ -1,0 +1,48 @@
+/* Contains font styles for all different text elements. */
+
+/* Initialize the custom font. */
+@font-face {
+    font-family: Custom;
+    src: url("/fonts/RobotoCondensed-VariableFont_wght.ttf");
+}
+
+/* Make sure tailwind generate the utility class for the custom font. */
+@theme static {
+    --font-custom: "Custom";
+}
+
+h1, h2, h3, h4, h5, h6, p, span {
+    @apply text-foreground font-custom;
+}
+
+h1 {
+    @apply text-5xl;
+}
+
+h2 {
+    @apply text-4xl;
+}
+
+h3 {
+    @apply text-3xl;
+}
+
+h4 {
+    @apply text-2xl;
+}
+
+h5 {
+    @apply text-xl;
+}
+
+h6 {
+    @apply text-lg;
+}
+
+p {
+    @apply text-base;
+}
+
+span {
+    @apply text-sm;
+}
