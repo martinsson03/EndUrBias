@@ -5,6 +5,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@custom-variant hover (&:hover);
+
 .margin-responsive {
   @apply ml-5 mr-5 md:ml-30 md:mr-30;
 }
@@ -13,7 +15,7 @@
   @apply pl-5 pr-5 md:pl-30 md:pr-30;
 }
 
-@theme inline {
+@theme static {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -53,7 +55,7 @@
 }
 
 :root {
-  --shadow-color: oklch(0.985 0 0);
+  --shadow-color: oklch(0.9 0 0);
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -89,7 +91,7 @@
 }
 
 .dark {
-  --shadow-color: oklch(0.985 0 0);
+  --shadow-color: oklch(0.3 0 0);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
