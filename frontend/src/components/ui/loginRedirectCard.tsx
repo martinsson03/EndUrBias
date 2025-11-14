@@ -23,7 +23,7 @@ export default function LoginRedirectCard(props: ILoginRedirectCardProps) {
     return (
         <Card className="min-w-xs">
             <CardHeader>
-                <CardTitle className="text-center">Sign in as: {props.signInAs}</CardTitle>
+                <CardTitle className="text-center text-xl">{props.signInAs}</CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center align-middle">
                 <User className="w-50 h-full"></User>
