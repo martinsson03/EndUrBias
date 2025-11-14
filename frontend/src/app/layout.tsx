@@ -1,6 +1,9 @@
-import type { Metadata } from "next";
 import "./globals.css";
-import Header from "../../components/header/header";
+
+import type { Metadata } from "next";
+
+import Header from "@/components/ui/header";
+import ThemeProvider from "@/components/theme-provider";
 
 // The metadata will be extracted by the next.js app and be delivered to the user.
 export const metadata: Metadata = {
@@ -11,10 +14,11 @@ export const metadata: Metadata = {
 // Layout component that will be applied before the other components.
 export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Header></Header>
-        <div className="margin-responsive">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <Header></Header>
+        </ThemeProvider>
       </body>
     </html>
   );
