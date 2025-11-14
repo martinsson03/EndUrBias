@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 // Component to toggle website theme.
 export default function ThemeToggle() {
     // Get the theme and the function to set the theme.
-    const { theme, resolvedTheme, setTheme } = useTheme();
+    const { theme, setTheme } = useTheme();
 
     // Variable holding the information if this component is mounted yet.
     const [mounted, setMounted] = useState(false);  
@@ -21,7 +21,7 @@ export default function ThemeToggle() {
 
     return (
         <Button onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); console.log(theme); }}>
-            { resolvedTheme === "light" ? <Sun className="w-5 h-5"></Sun> : <Moon className="w-5 h-5"></Moon> }
+            { theme === "light" ? <Sun className="w-5 h-5"></Sun> : <Moon className="w-5 h-5"></Moon> }
         </Button>
     );
 };
