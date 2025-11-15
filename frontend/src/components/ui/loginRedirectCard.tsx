@@ -11,7 +11,7 @@ import {
     CardHeader,
     CardTitle 
 } from "./card";
-import { redirect } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 interface ILoginRedirectCardProps {
     signInAs: string;
@@ -20,6 +20,8 @@ interface ILoginRedirectCardProps {
 
 // A card that redirects you, upon pressed, to another url.
 export default function LoginRedirectCard(props: ILoginRedirectCardProps) {
+    const router = useRouter();
+
     return (
         <Card className="min-w-xs">
             <CardHeader>
@@ -29,7 +31,7 @@ export default function LoginRedirectCard(props: ILoginRedirectCardProps) {
                 <User className="w-50 h-full"></User>
             </CardContent>
             <CardFooter>
-                <Button onClick={() => redirect(props.redirectUrl) } className="w-full">Sign in</Button>
+                <Button onClick={() => router.push(props.redirectUrl) } className="w-full">Sign in</Button>
             </CardFooter>
         </Card>
     );
