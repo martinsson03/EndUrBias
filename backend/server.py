@@ -12,11 +12,11 @@ class AnonymizeRequest(BaseModel):
 
 @app.get("/")
 def read_root():
-    return HTTPException(code=400, detail="API up and running!")
+    return HTTPException(status_code=400, detail="API up and running!")
 
 @app.post("/anonym")
 def anonymise(request: AnonymizeRequest):
     try:
         decoded_bytes = base64.b64decode(request.data)
     except Exception as e:
-        return HTTPException(code=400, detail=f"An error occured: {str(e)}")
+        return HTTPException(status_code=400, detail=f"An error occured: {str(e)}")
