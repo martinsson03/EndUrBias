@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException, Query, Path, Body
 from pydantic import BaseModel
 from typing import Optional, List
-    
+import base64
+
 # Create the FastAPI instance
 app = FastAPI()
 
@@ -15,4 +16,7 @@ def read_root():
 
 @app.post("/anonym")
 def anonymise(request: AnonymizeRequest):
-    return HTTPException(code=400, detail="wrong")
+    try:
+        decoded_bytes = base64.b64decode(request.data)
+    except Exception as e:
+        return HTTPException(code=400, detail=f"An error occured: {str(e)}")
