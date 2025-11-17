@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Query, Path, Body
 from pydantic import BaseModel
 from typing import Optional, List
 import base64
-from extract import extract_text
+from pdf_extract import extract_text
 
 # Create the FastAPI instance
 app = FastAPI()
