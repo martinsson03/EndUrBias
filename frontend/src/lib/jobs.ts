@@ -48,7 +48,7 @@ export async function getJobsForUser(): Promise<Job[]> {
   ];
 }
 
-// Helper: build URL for a job
+// URL helper: /user/1 osv
 export function jobApplyUrl(jobId: string) {
   return `/user/${jobId}`;
 }

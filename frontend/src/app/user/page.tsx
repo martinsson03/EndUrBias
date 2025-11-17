@@ -5,10 +5,10 @@ export default async function UserPage() {
   const jobs = await getJobsForUser();
 
   return (
-    <main className="pt-8">
-      <h1 className="text-3xl font-semibold mb-6 text-center">User jobs</h1>
+    <main className="max-w-3xl mx-auto pt-8">
+      <h1 className="text-4xl font-bold mb-6 text-center">User jobs</h1>
 
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col gap-6">
         {jobs.map((job) => (
           <JobRedirectCard
             key={job.id}
@@ -16,7 +16,7 @@ export default async function UserPage() {
             company={job.company}
             location={job.location}
             extent={job.extent}
-            applyUrl={jobApplyUrl(job.id)}
+            applyUrl={jobApplyUrl(job.id)} 
           />
         ))}
       </div>
