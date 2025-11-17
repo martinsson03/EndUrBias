@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   NativeSelect,
-  NativeSelectOption, // om din komponent heter NativeSelectItem byt bara namnet här
+  NativeSelectOption,
 } from "@/components/ui/native-select";
 import { getJobsForUser } from "@/lib/jobs";
 
@@ -21,7 +21,7 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
   return (
     <main className="min-h-screen flex justify-center pt-12 px-4">
       <section className="w-full max-w-2xl space-y-8">
-        {/* Titel + beskrivning */}
+        {/* Titel */}
         <header className="text-center space-y-2">
           <h1 className="text-3xl font-semibold">
             {job ? `Apply for ${job.title}` : "Apply for this job"}
@@ -36,36 +36,36 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
           </p>
         </header>
 
-        {/* FORM – ingen submit-logik ännu */}
+        {/* FORMULÄR */}
         <form className="grid gap-6">
-          {/* Rad 1: Namn + Email */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="grid w-full items-center gap-3">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Enter your name" />
-            </div>
-
-            <div className="grid w-full items-center gap-3">
-              <Label htmlFor="email">Email</Label>
+          {/* GRID: 6 kolumner på desktop */}
+          <div className="grid gap-4 md:grid-cols-6">
+            {/* Firstname — 2 kolumner */}
+            <div className="grid w-full items-center gap-2 md:col-span-2">
+              <Label htmlFor="firstname">Firstname</Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
+                id="firstname"
+                name="firstname"
+                placeholder="Your firstname"
+                className="h-10"
               />
             </div>
-          </div>
 
-          {/* Rad 2: Telefon + Kön */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="grid w-full items-center gap-3">
-              <Label htmlFor="phone">Phone number</Label>
-              <Input id="phone" name="phone" type="tel" placeholder="+..." />
+            {/* Lastname — 2 kolumner */}
+            <div className="grid w-full items-center gap-2 md:col-span-2">
+              <Label htmlFor="lastname">Lastname</Label>
+              <Input
+                id="lastname"
+                name="lastname"
+                placeholder="Your lastname"
+                className="h-10"
+              />
             </div>
 
-            <div className="grid w-full items-center gap-3">
+            {/* Gender — 2 kolumner */}
+            <div className="grid w-full items-center gap-2 md:col-span-2">
               <Label htmlFor="gender">Gender</Label>
-              <NativeSelect id="gender" name="gender">
+              <NativeSelect id="gender" name="gender" className="w-full h-10">
                 <NativeSelectOption value="">Select gender</NativeSelectOption>
                 <NativeSelectOption value="man">Man</NativeSelectOption>
                 <NativeSelectOption value="kvinna">Kvinna</NativeSelectOption>
@@ -75,9 +75,33 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
                 </NativeSelectOption>
               </NativeSelect>
             </div>
+
+            {/* Email — span 3 kolumner */}
+            <div className="grid w-full items-center gap-2 md:col-span-3">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                className="h-10"
+              />
+            </div>
+
+            {/* Phone — span 3 kolumner */}
+            <div className="grid w-full items-center gap-2 md:col-span-3">
+              <Label htmlFor="phone">Phone number</Label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="+46..."
+                className="h-10"
+              />
+            </div>
           </div>
 
-          {/* Här under lägger vi drag & drop senare */}
+          {/* Drag-and-drop kommer här sen */}
         </form>
       </section>
     </main>
