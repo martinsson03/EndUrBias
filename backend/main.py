@@ -1,10 +1,11 @@
 import spacy
+from spacy import displacy
 
-def main():
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp("Apple is looking at buying U.K. startup for $1 billion")
-    for token in doc:
-        print(token.text, token.pos_, token.dep_)
+nlp = spacy.load("en_core_web_sm")
 
-if __name__ == "__main__":
-    main()
+with open ("data/wiki_mlk.txt", "r") as f:
+    text = f.read()
+
+doc = nlp(text)
+
+displacy.serve(doc, style="ent")

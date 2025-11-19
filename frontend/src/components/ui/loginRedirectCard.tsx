@@ -4,14 +4,12 @@ import { User } from "lucide-react";
 import { Button } from "./button";
 import { 
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle 
 } from "./card";
-import { redirect } from 'next/navigation'
+import Link from "next/link";
 
 interface ILoginRedirectCardProps {
     signInAs: string;
@@ -29,7 +27,7 @@ export default function LoginRedirectCard(props: ILoginRedirectCardProps) {
                 <User className="w-50 h-full"></User>
             </CardContent>
             <CardFooter>
-                <Button onClick={() => redirect(props.redirectUrl) } className="w-full">Sign in</Button>
+                <Link href={props.redirectUrl} className="w-full"><Button className="w-full">Sign in</Button></Link>
             </CardFooter>
         </Card>
     );
