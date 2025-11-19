@@ -1,13 +1,18 @@
 // lib/jobs.ts
 
+// Typdefinition som beskriver ett jobbobjekt i systemet.
+// Den används både av UI-komponenter och av serverkomponenter.
 export interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  extent: string;
+  id: string;        // unikt ID som matchar URL-parametern /user/[jobId]
+  title: string;     // jobbtitel
+  company: string;   // arbetsgivare
+  location: string;  // stad
+  extent: string;    // heltid / deltid
 }
 
+// Hämtar alla tillgängliga jobb för användaren.
+// Just nu returnerar den hårdkodad mock-data, men i framtiden kan den
+// enkelt bytas ut mot en riktig databas eller API.
 export async function getJobsForUser(): Promise<Job[]> {
   return [
     {
@@ -48,7 +53,8 @@ export async function getJobsForUser(): Promise<Job[]> {
   ];
 }
 
-// URL helper: /user/1 osv
+// Hjälpfunktion för att generera korrekt URL till ansökningssidan.
+// Gör att UI-komponenter slipper hårdkoda paths.
 export function jobApplyUrl(jobId: string) {
   return `/user/${jobId}`;
 }
