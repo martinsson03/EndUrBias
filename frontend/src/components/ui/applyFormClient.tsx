@@ -1,53 +1,40 @@
-// components/ui/apply-form-client.tsx
-
-"use client"; 
-// Detta är en klientkomponent eftersom den använder state, events och filuppladdning.
+"use client";
+// Klientkomponent: behövs eftersom vi använder state, events och FileReader.
 
 import { useState, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/nativeSelect";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/nativeSelect";
 import { CvDropzone } from "@/components/ui/cvDropzone";
 import { Button } from "@/components/ui/button";
 
 interface ApplyFormClientProps {
-  // jobId skickas in från serversidan (ApplyPage)
-  jobId: string;
+  jobId: string; // ID på jobbet som användaren söker (kommer från serverkomponenten)
 }
 
 interface ApplicationPayload {
-  // Payload-formatet som skickas till backend
   jobId: string;
   firstName: string;
   lastName: string;
   gender: string;
   email: string;
   phone: string;
-  cvBase64: string; // PDF i Base64-format
+  cvBase64: string; // CV i Base64-format innan det skickas till backend
 }
 
-// Hjälpfunktion: konverterar ett File-objekt (PDF) till ren Base64-sträng
-// (tar bort "data:application/pdf;base64,...")
+// Konverterar ett File-objekt (PDF) till Base64-sträng.
+// FileReader är asynkron, därför returneras en Promise.
 async function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-
-    reader.onload = () => {
-      const result = reader.result as string;
-      const base64 = result.split(",")[1] ?? "";
-      resolve(base64);
-    };
-
-    reader.onerror = (err) => reject(err);
+    reader.onload = () =>
+      resolve((reader.result as string).split(",")[1] || "");
     reader.readAsDataURL(file);
   });
 }
 
 export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
-  // Form state
+  // Formfält
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [gender, setGender] = useState("");
@@ -55,18 +42,18 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
   const [phone, setPhone] = useState("");
   const [cv, setCv] = useState<File | null>(null);
 
-  // UI feedback state
+  // UI-state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Formsubmit-logik
+  // Hanterar själva submit-eventet
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setSuccess(false);
 
-    // Enkel validering på klientsidan
+    // Enkel validering
     if (!firstname || !lastname || !email) {
       setError("Please fill in firstname, lastname and email.");
       return;
@@ -80,10 +67,10 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
     try {
       setIsSubmitting(true);
 
-      // Konvertera PDF till Base64
+      // Gör om PDF-filen till Base64 innan den skickas
       const cvBase64 = await fileToBase64(cv);
 
-      // Skapa payload att skicka till backend
+      // Payload som skickas till backend
       const payload: ApplicationPayload = {
         jobId,
         firstName: firstname,
@@ -96,8 +83,8 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
 
       console.log("Sending application payload:", payload);
 
-      // Skicka ansökan till API-route
-      const res = await fetch("/api/submit-application", {
+      // POST mot API-route
+      const res = await fetch("/api/submitApplication", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -107,7 +94,6 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
         throw new Error("Server returned an error status.");
       }
 
-      // Visa feedback om det lyckas
       setSuccess(true);
     } catch (err: any) {
       console.error(err);
@@ -118,9 +104,8 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
   }
 
   return (
-    // Form med grid-layout
     <form className="grid gap-6" onSubmit={handleSubmit}>
-      {/* Formfält organiserade i 6 kolumner */}
+      {/* Fält organiserade i 6 kolumner */}
       <div className="grid gap-4 md:grid-cols-6">
         {/* Firstname */}
         <div className="grid gap-2 md:col-span-2">
@@ -146,7 +131,7 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
           />
         </div>
 
-        {/* Gender dropdown */}
+        {/* Gender */}
         <div className="grid gap-2 md:col-span-2">
           <Label htmlFor="gender">Gender</Label>
           <NativeSelect
@@ -192,10 +177,10 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
         </div>
       </div>
 
-      {/* CV-upload komponent */}
+      {/* CV-uploadfält */}
       <CvDropzone onFileChange={setCv} />
 
-      {/* Fel- eller lyckade meddelanden */}
+      {/* Feedback till användaren */}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {success && (
         <p className="text-sm text-green-600">
