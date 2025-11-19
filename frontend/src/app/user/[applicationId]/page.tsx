@@ -2,13 +2,9 @@ import { getJobsForUser } from "@/lib/jobs";
 import { ApplyFormClient } from "@/components/ui/apply-form-client";
 import { notFound } from "next/navigation";
 
-interface ApplyPageProps {
-  params: { applicationId: string };
-}
-
-export default async function ApplyPage({ params }: ApplyPageProps) {
+export default async function ApplyPage({ params }: { params: Promise<{ applicationId: string }> }) {
   const jobs = await getJobsForUser();
-  const job = jobs.find((j) => j.id === params.applicationId);
+  const job = jobs.find(async (j) => j.id === (await params).applicationId);
 
   // if (!job) {
   //  notFound(); // visar 404-sidan men är buggad
