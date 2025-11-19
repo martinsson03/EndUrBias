@@ -31,7 +31,10 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
 
   // Debug-loggar som hjälper vid utveckling. Kan tas bort i produktion.
   console.log("ApplyPage jobId:", jobId);
-  console.log("Available job ids:", jobs.map((j) => j.id));
+  console.log(
+    "Available job ids:",
+    jobs.map((j) => j.id)
+  );
 
   // Försöker hitta det jobb som matchar jobId i URL:en.
   const job = jobs.find((j) => j.id === jobId);
