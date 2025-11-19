@@ -26,12 +26,23 @@ import { SeperatorVerticle } from "@/components/ui/seperator";
 
 import { Button } from "@/components/ui/button";
 
+interface job {
+    title: string,
+    organisation: string,
+    description: string
+};
+
 export default function Recruiter() {
     const jobs: job[] = [
         {
-            title: "Hållbar utveckling",
+            title: "Sustainable Resource Manager",
             organisation: "Valvi Tech",
-            description: "Förändra världen med sådär-ny teknik."
+            description: "Manage resources and save the world in teams of up to 100 people."
+        },
+        {
+            title: "Grave Plunderer",
+            organisation: "Valvi Tech",
+            description: "A job that is often discouraged because of missunderstandings... come work for us make place for new people."
         }
     ];
 
@@ -62,12 +73,6 @@ export default function Recruiter() {
     );
 };
 
-interface job {
-    title: string,
-    organisation: string,
-    description: string
-};
-
 function jobCard(job: job, index: number) {
     return (
         <Card className="flex flex-row p-3 pl-6 pr-6 items-center gap-5 justify-between" key={index}>
@@ -76,7 +81,7 @@ function jobCard(job: job, index: number) {
                 <SeperatorVerticle></SeperatorVerticle>
                 <h5 className="text-secondary-foreground">{job.description}</h5>
             </div>
-            <Link href={`/recruiter/talentpool/${index}`}></Link><Button>View talentpool</Button>
+            <Link href={`/recruiter/talentpool/${index}`}><Button>View talentpool</Button></Link>
         </Card>
     );
 };
