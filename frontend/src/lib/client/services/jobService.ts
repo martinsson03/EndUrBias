@@ -10,16 +10,16 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 }
 
 // A recruiter can create a job using the parameters. Returns true if success.
-export async function CreateNewJob(details: UpdateJobRequest, userId: id): Promise<boolean> {
+export async function CreateNewJob(details: UpdateJobRequest): Promise<boolean> {
     throw new Error("Not implemented!");
 }
 
 // A recruiter can update a job using the parameters. Returns true if success.
-export async function UpdateNewJob(details: UpdateJobRequest, userId: id): Promise<boolean> {
+export async function UpdateExistingJob(details: UpdateJobRequest): Promise<boolean> {
     throw new Error("Not implemented!");
 }
 
 // A recruiter can remove a job by id. Returns true if success.
-export async function RemoveNewJob(jobId: id, userId: id): Promise<boolean> {
+export async function RemoveExistingJob(jobId: id): Promise<boolean> {
     throw new Error("Not implemented!");
 }
