@@ -1,0 +1,36 @@
+// User functions, on the server, that is related to applications. Contains the business logic.
+
+import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
+import type { id } from "@/lib/models/shared/id";
+import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
+import CVViewModel from "@/lib/models/view/cvViewModel";
+
+// Tries to format and submit an application to the database.
+export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id): Promise<boolean> {
+    throw new Error("Not implemented!");
+}
+
+// Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
+export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | undefined> {
+    throw new Error("Not implemented!");
+}
+
+// Returns all uncensored applications from the specific job. Fetches them from the database.
+export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[]> {
+    throw new Error("Not implemented!");
+}
+
+// Returns all censored applications from the specific job that the recruiter has looked at already. Fetches them from the database.
+export async function GetCensoredLookedAtApplications(jobId: id): Promise<CensoredCVViewModel[]> {
+    throw new Error("Not implemented!");
+}
+
+// Returns all applications that are considered a candidate.
+export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
+    throw new Error("Not implemented!");
+}
+
+// Changes the application to the 4 different states depending on the current state and the requestRealCV parameter. Returns true if it worked.
+export async function ChangeApplicationState(requestRealCV: boolean, applicationId: id): Promise<boolean> {
+    throw new Error("Not implemented!");
+}
