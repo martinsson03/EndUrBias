@@ -8,4 +8,4 @@ export default function NotFound() {
             <p>Didn't find what you were looking for!</p>
         </div>
     );
-};
+}
