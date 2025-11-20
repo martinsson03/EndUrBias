@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+
   frontend:
     build:
       context: ./frontend
@@ -12,3 +13,13 @@ services:
     ports:
       - "80:80"
 
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless_stoped
+    environment:
+      POSTGRES_USER: ${EUB_DB_USERNAME}
+      POSTGRES_PASSWORD: ${EUB_DB_PASSWORD}
+      POSTGRES_DB: ${EUB_DB_DATABASE}
+    ports:
+      - "${EUV_DB_PORT}:5432"
