@@ -1,5 +1,5 @@
 "use client";
-// Klientkomponent: behövs eftersom vi använder state, events och FileReader.
+// Klientkomponent: krävs eftersom vi använder useState, event-hantering och FileReader.
 
 import { useState, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import { CvDropzone } from "@/components/ui/cvDropzone";
 import { Button } from "@/components/ui/button";
 
 interface ApplyFormClientProps {
-  jobId: string; // ID på jobbet som användaren söker (kommer från serverkomponenten)
+  jobId: string; // ID för jobbet som användaren söker
 }
 
 interface ApplicationPayload {
@@ -19,16 +19,19 @@ interface ApplicationPayload {
   gender: string;
   email: string;
   phone: string;
-  cvBase64: string; // CV i Base64-format innan det skickas till backend
+  cvBase64: string; // CV som Base64-sträng
 }
 
-// Konverterar ett File-objekt (PDF) till Base64-sträng.
-// FileReader är asynkron, därför returneras en Promise.
+// Konverterar ett File-objekt (PDF) till Base64.
+// FileReader är asynkron, därför används en Promise.
 async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve) => {
     const reader = new FileReader();
+
+    // När filen är färdigläst plockas Base64-delen ut, utan prefixet
     reader.onload = () =>
       resolve((reader.result as string).split(",")[1] || "");
+
     reader.readAsDataURL(file);
   });
 }
@@ -42,18 +45,18 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
   const [phone, setPhone] = useState("");
   const [cv, setCv] = useState<File | null>(null);
 
-  // UI-state
+  // UI-state för feedback
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Hanterar själva submit-eventet
+  // Skickas vid form-submit
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setSuccess(false);
 
-    // Enkel validering
+    // Grundläggande validering
     if (!firstname || !lastname || !email) {
       setError("Please fill in firstname, lastname and email.");
       return;
@@ -67,10 +70,9 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
     try {
       setIsSubmitting(true);
 
-      // Gör om PDF-filen till Base64 innan den skickas
+      // Konverterar fil till Base64 innan payload skapas
       const cvBase64 = await fileToBase64(cv);
 
-      // Payload som skickas till backend
       const payload: ApplicationPayload = {
         jobId,
         firstName: firstname,
@@ -83,7 +85,7 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
 
       console.log("Sending application payload:", payload);
 
-      // POST mot API-route
+      // Skickar ansökan till vår API-route
       const res = await fetch("/api/submitApplication", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,9 +107,8 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit}>
-      {/* Fält organiserade i 6 kolumner */}
+      {/* Formstrukturen: 6 kolumner på desktop */}
       <div className="grid gap-4 md:grid-cols-6">
-        {/* Firstname */}
         <div className="grid gap-2 md:col-span-2">
           <Label htmlFor="firstname">Firstname</Label>
           <Input
@@ -119,7 +120,6 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
           />
         </div>
 
-        {/* Lastname */}
         <div className="grid gap-2 md:col-span-2">
           <Label htmlFor="lastname">Lastname</Label>
           <Input
@@ -131,7 +131,6 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
           />
         </div>
 
-        {/* Gender */}
         <div className="grid gap-2 md:col-span-2">
           <Label htmlFor="gender">Gender</Label>
           <NativeSelect
@@ -150,7 +149,6 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
           </NativeSelect>
         </div>
 
-        {/* Email */}
         <div className="grid gap-2 md:col-span-3">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -163,7 +161,6 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
           />
         </div>
 
-        {/* Phone */}
         <div className="grid gap-2 md:col-span-3">
           <Label htmlFor="phone">Phone number</Label>
           <Input
@@ -177,10 +174,10 @@ export function ApplyFormClient({ jobId }: ApplyFormClientProps) {
         </div>
       </div>
 
-      {/* CV-uploadfält */}
+      {/* CV-uppladdning */}
       <CvDropzone onFileChange={setCv} />
 
-      {/* Feedback till användaren */}
+      {/* Feedback efter submit */}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {success && (
         <p className="text-sm text-green-600">

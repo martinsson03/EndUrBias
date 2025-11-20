@@ -1,7 +1,12 @@
 // app/user/[jobId]/page.tsx
 
+// Hämtar jobblistan (just nu hårdkodad)
 import { getJobsForUser } from "@/lib/jobs";
+
+// Klientkomponenten som innehåller själva ansökningsformuläret
 import { ApplyFormClient } from "@/components/ui/applyFormClient";
+
+// Next.js 404-funktion
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
@@ -14,23 +19,32 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+// I Next.js 15/16 är params asynkrona → därför är det en Promise
 interface ApplyPageProps {
   params: Promise<{ jobId: string }>;
 }
 
 export default async function ApplyPage({ params }: ApplyPageProps) {
+  // Väntar på att få ut jobId från URL:en
   const { jobId } = await params;
 
+  // Hämtar alla jobb och letar efter rätt jobb baserat på URL-parametern
   const jobs = await getJobsForUser();
   const job = jobs.find((j) => j.id === jobId);
 
+  // Om jobbet inte finns → visa Next.js inbyggda 404-sida
   if (!job) {
     notFound();
   }
 
   return (
     <>
-      {/* BREACRUMB – full width, vänsterställd precis som i recruitersidan */}
+      {/* 
+        BREADCRUMB 
+        - ligger i full bredd
+        - vänsterställd som recruitersidan
+        - visar navigation: Home → User Jobs → aktuellt jobb
+      */}
       <div className="margin-responsive flex flex-col gap-5 mt-5">
         <Breadcrumb>
           <BreadcrumbList>
@@ -71,7 +85,11 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
         </Breadcrumb>
       </div>
 
-      {/* Main content – centrerat som vanligt */}
+      {/* 
+        SIDANS HUVUDINNEHÅLL 
+        - centrerat som tidigare
+        - visar jobbinformation + formulär
+      */}
       <main className="min-h-screen flex justify-center pt-12 px-4">
         <section className="w-full max-w-2xl space-y-8">
           <header className="text-center space-y-1">
@@ -88,6 +106,7 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
             </p>
           </header>
 
+          {/* Klientkomponenten som skickar in ansökan */}
           <ApplyFormClient jobId={jobId} />
         </section>
       </main>
