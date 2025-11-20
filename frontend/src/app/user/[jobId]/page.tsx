@@ -36,16 +36,22 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
           <BreadcrumbList>
             {/* Home */}
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
+              <BreadcrumbLink
+                asChild
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <Link href="/">Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbSeparator />
 
-            {/* User jobs */}
+            {/* User Jobs */}
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
+              <BreadcrumbLink
+                asChild
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <Link href="/user">User Jobs</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -54,7 +60,12 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
 
             {/* Current job */}
             <BreadcrumbItem>
-              <BreadcrumbPage>{job.title}</BreadcrumbPage>
+              <BreadcrumbLink
+                asChild
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Link href={`/user/${job.id}`}>{job.title}</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

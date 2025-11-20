@@ -19,16 +19,26 @@ export default async function UserPage() {
       <div className="margin-responsive flex flex-col gap-5 mt-5">
         <Breadcrumb>
           <BreadcrumbList>
+            {/* Home */}
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
+              <BreadcrumbLink
+                asChild
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <Link href="/">Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbSeparator />
 
+            {/* User Jobs */}
             <BreadcrumbItem>
-              <BreadcrumbPage>User Jobs</BreadcrumbPage>
+              <BreadcrumbLink
+                asChild
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Link href="/user">User Jobs</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
