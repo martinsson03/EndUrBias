@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -24,4 +24,4 @@ export default function ThemeToggle() {
             { theme === "light" ? <Sun className="w-5 h-5"></Sun> : <Moon className="w-5 h-5"></Moon> }
         </Button>
     );
-};
+}

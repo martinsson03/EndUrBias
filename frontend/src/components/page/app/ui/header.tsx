@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggle from "../../ui/themeToggle";
+import ThemeToggle from "./themeToggleClient";
 
 // Header for the website.
 export default function Header() {

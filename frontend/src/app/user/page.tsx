@@ -1,66 +1,30 @@
-import JobRedirectCard from "@/components/ui/jobRedirectCard";
-import { getJobsForUser, jobApplyUrl } from "@/lib/jobs";
+import UserPageContent from "@/components/page/user/ui/userPageContent";
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/shadcn/ui/breadcrumb";
+import { PageContentContainer } from "@/components/ui/pageContentContainer";
 import Link from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
-export default async function UserPage() {
-  const jobs = await getJobsForUser();
+export default function User() {
+    return(
+        <PageContentContainer className="flex flex-col gap-5 mt-5">
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link href="/">Home</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
 
-  return (
-    <>
-      {/* Breadcrumb – full width, vänsterställd */}
-      <div className="margin-responsive flex flex-col gap-5 mt-5">
-        <Breadcrumb>
-          <BreadcrumbList>
-            {/* Home */}
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                asChild
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Link href="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+                    <BreadcrumbSeparator />
 
-            <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link href="/user">Jobs</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
 
-            {/* User Jobs */}
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                asChild
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Link href="/user">User Jobs</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-
-      {/* Själva contentet är fortfarande centrerat */}
-      <main className="max-w-3xl mx-auto pt-4">
-        <h1 className="text-4xl font-bold mb-6 text-center">User jobs</h1>
-
-        <div className="flex flex-col gap-6">
-          {jobs.map((job) => (
-            <JobRedirectCard
-              key={job.id}
-              title={job.title}
-              company={job.company}
-              location={job.location}
-              extent={job.extent}
-              applyUrl={jobApplyUrl(job.id)}
-            />
-          ))}
-        </div>
-      </main>
-    </>
-  );
+            <UserPageContent></UserPageContent>
+        </PageContentContainer>
+    );
 }

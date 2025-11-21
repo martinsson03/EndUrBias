@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shadcn/utils";
 
 // En stylad wrapper runt ett vanligt <select>.
 function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
@@ -9,7 +9,7 @@ function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
       className="group/native-select relative w-full has-[select:disabled]:opacity-50"
       data-slot="native-select-wrapper"
     >
-      {/* Själva selecten med Tailwind-styling */}
+      {/* Selection with tailwind. */}
       <select
         data-slot="native-select"
         className={cn(
@@ -21,7 +21,7 @@ function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
         {...props}
       />
 
-      {/* Chevron-ikon till höger */}
+      {/* Chevron-icon to the right. */}
       <ChevronDownIcon
         className="text-muted-foreground pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 opacity-50 select-none"
         aria-hidden="true"
@@ -31,12 +31,10 @@ function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
   );
 }
 
-// Option-wrapper för konsekvens och enklare testning.
 function NativeSelectOption(props: React.ComponentProps<"option">) {
   return <option data-slot="native-select-option" {...props} />;
 }
 
-// Optgroup med samma pattern.
 function NativeSelectOptGroup({
   className,
   ...props

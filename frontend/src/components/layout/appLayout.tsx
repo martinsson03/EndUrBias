@@ -1,4 +1,4 @@
-import Header from "@/components/pages/app/header";
+import Header from "@/components/page/app/ui/header";
 import ThemeProvider from "@/components/themeProvider";
 
 export default function AppLayout({children}: Readonly<{children: React.ReactNode;}>) {
