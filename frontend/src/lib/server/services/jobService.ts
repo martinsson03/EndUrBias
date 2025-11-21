@@ -9,6 +9,11 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
     throw new Error("Not implemented!");
 }
 
+// Returns all details of a job by an id.
+export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
+    throw new Error("Not implemented!");
+}
+
 // A recruiter can create a job using the parameters. Returns true if success.
 export async function CreateNewJob(details: UpdateJobRequest): Promise<boolean> {
     throw new Error("Not implemented!");

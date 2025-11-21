@@ -80,6 +80,25 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
     throw new Error("Not implemented!");
 }
 
+// Returns all details of a job by an id.
+export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
+    const job: JobViewModel = {
+        id: "514142",
+        Title: "Grave plunderer - free loot",
+        Company: "Plunder AB",
+        CompanyId: "41233",
+        Location: "Gothenburg",
+        Extent: "Full-time",
+        Description: "## Position: Grave Plunderer – Free Loot (Fictional Role in a Fantasy Universe) \n\nA courageous adventurer is invited to join Plunder AB as a full-time Grave Plunderer in a fantasy setting, exploring atmospheric cemeteries, ancient ruins, and forgotten crypts in Gothenburg to recover magical relics, historical artifacts, and academic curiosities while working under the scorching sun and navigating dusty landscapes. \n\n## Responsibilities \n\nRetrieve enchanted or historically valuable items, decode mystical puzzles, deactivate ancient traps, document findings in the company’s digital grimoire, collaborate with mages, cryptographers, and archaeologists, and maintain respectful conduct toward the lore and spirits tied to each site. \n\n## Working Conditions \nExpect heat, tight tunnels, dim chambers, occasional spectral guardians, and the thrill of uncovering secrets unseen for centuries. \n## Required Skills \nStrong problem-solving abilities, stamina, a fascination with fantasy history and runes, respect for fictional spirits and traditions, and the ability to distinguish cursed relics from harmless ones. \n## Why Join Plunder AB \nGain access to legendary tools, immersive narrative environments, supportive and eccentric colleagues, opportunities for glory and loot bonuses, and the excitement of contributing to the magical knowledge of the realm.",
+        Tags: ["Hot", "Up-and-coming", "Grave", "Cemetary"],
+        DateOfTermination: new Date()
+    }
+
+    return job;
+
+    throw new Error("Not implemented!");
+}
+
 // A recruiter can create a job using the parameters. Returns true if success.
 export async function CreateNewJob(details: UpdateJobRequest): Promise<boolean> {
     throw new Error("Not implemented!");

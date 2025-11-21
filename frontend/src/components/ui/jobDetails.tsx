@@ -17,7 +17,7 @@ export default function JobDetails({ job, children, className }: JobDetailsProps
             <Card>
                 <CardHeader>
                     <h5 className="font-bold">{ job.Title }</h5>
-                    <CardDescription><Link href={`/company/${job.CompanyId}`}>{ job.Company }</Link></CardDescription>
+                    <CardDescription><Link href={`user/company/${job.CompanyId}`} className="italic">{ job.Company }</Link></CardDescription>
                     <CardDescription>{ job.Location } • { job.Extent }</CardDescription>
                     <div className="flex gap-1 flex-wrap">
                         {job.Tags.map((tag, i) => (
