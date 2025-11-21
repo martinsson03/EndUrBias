@@ -1,14 +1,18 @@
 // The database service that will be used to make queries.
 
 import { Pool, PoolClient, QueryResult } from "pg";
+import dotenv from "dotenv";
+
+// Load environment variables.
+dotenv.config();
 
 // Define the pool of connections that can make request to the database.
 const pool: Pool = new Pool({
-    user: "",
-    host: "",
-    database: "",
-    password: "",
-    port: 0
+    user: process.env.DB_USER ?? "",
+    host: process.env.DB_HOST ?? "",
+    database: process.env.DB_NAME ?? "",
+    password: process.env.DB_PASSWORD ?? "",
+    port: Number(process.env.DB_PORT) ?? 5000
 });
 
 // Verifies the connection to the postgres db server.
