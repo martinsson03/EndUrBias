@@ -1,13 +1,19 @@
+import { cn } from "@/lib/shadcn/utils";
+
+type SeperatorProps = {
+    className?: string
+};
+
 // Small seperator for seperating elements vertically.
-export function SeperatorVerticle() {
+export function SeperatorVerticle({ className }: Readonly<SeperatorProps>) {
     return (
-        <div className="h-full w-0.5 bg-secondary-foreground"></div>
+        <div className={cn("h-full w-[0.3px] bg-secondary-foreground", className)}></div>
     );
 }
 
 // Horizontal seperator.
-export function SeperatorHorizontal() {
+export function SeperatorHorizontal({ className }: Readonly<SeperatorProps>) {
     return (
-        <div className="h-0.5 w-full bg-secondary-foreground"></div>
+        <div className={cn("h-[0.3px] w-full bg-secondary-foreground", className)}></div>
     );
 }
