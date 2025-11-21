@@ -28,7 +28,7 @@ export default function JobPageContent({ job }: JobPageContentProps) {
                     </div>
                 </div>
 
-                <Link href={`#apply`} className="self-end"><Button>Apply for this role!</Button></Link>
+                <Link href={`#apply`} className="self-end"><Button>Apply now!</Button></Link>
             </div>
 
             <SeperatorHorizontal></SeperatorHorizontal>
