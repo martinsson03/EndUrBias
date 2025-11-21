@@ -2,7 +2,6 @@ import JobViewModel from "@/lib/models/view/jobViewModel";
 import { Card, CardDescription, CardFooter, CardHeader } from "../shadcn/ui/card";
 import { Badge } from "../shadcn/ui/badge";
 import Link from "next/link";
-import { Button } from "../shadcn/ui/button";
 import { cn } from "@/lib/shadcn/utils";
 
 type JobDetailsProps = {
