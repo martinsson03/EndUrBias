@@ -5,6 +5,8 @@ import { SeperatorHorizontal } from "@/components/ui/seperator";
 import JobViewModel from "@/lib/models/view/jobViewModel";
 import Link from "next/link";
 
+import { MapPin, BriefcaseBusiness } from "lucide-react";
+
 type JobPageContentProps = {
     job: JobViewModel
 };
@@ -16,8 +18,8 @@ export default function JobPageContent({ job }: JobPageContentProps) {
             <div className="flex gap-10 justify-between">
                 <div className="flex flex-col gap-1.5">
                     <h3 className="font-bold">{ job.Title }</h3>
-                    <Link href={`user/company/${job.CompanyId}`}><h6 className="italic">{ job.Company }</h6></Link>
-                    <h6>{ job.Location } • { job.Extent }</h6>
+                    <Link className="flex" href={`user/company/${job.CompanyId}`}><BriefcaseBusiness className="pr-1" size={25}></BriefcaseBusiness><h6 className="italic">{ job.Company }</h6></Link>
+                    <h6 className="flex"><MapPin className="pr-1" size={25}></MapPin>{ job.Location } • { job.Extent }</h6>
                     <div className="flex gap-1 flex-wrap">
                         {job.Tags.map((tag, i) => (
                             <Badge key={i} variant="secondary">{ tag }</Badge>
