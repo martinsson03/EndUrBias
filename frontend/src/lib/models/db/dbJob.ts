@@ -10,5 +10,5 @@ export default interface Job extends IdentifiableObject {
     Location: string,        // Where the job is located, ex: Gothenburg.
     Extent: string,          // What type of job type is it, ex: full-time, part-time.
     Description: string,     // Job description that the recruiter has filled in.
-    Tags: string[]           // A list of tags that are associated with this job.
+    Tags: string             // A list of tags that are associated with this job. Seperated by ','.
 };
