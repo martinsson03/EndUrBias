@@ -1,6 +1,6 @@
 import os
 import json
-import fitz  # from PyMuPDF
+import pymupdf  # from PyMuPDF
 from dotenv import load_dotenv
 from groq import Groq
 
@@ -14,7 +14,7 @@ client = Groq(api_key=groq_key)
 
 def extract_words_with_positions(pdf_bytes: bytes):
     """Return list of pages with word positions and IDs."""
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
     pages = []
 
     for page_index, page in enumerate(doc):
@@ -130,7 +130,7 @@ def anonymize_pdf_with_llm(pdf_bytes: bytes) -> bytes:
     redact_ids = set(ask_llm_for_redactions(pages_for_llm))
 
     # Re-open the PDF and apply redactions
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
     for page_info in pages_for_llm:
         page_index = page_info["page"]
@@ -139,7 +139,7 @@ def anonymize_pdf_with_llm(pdf_bytes: bytes) -> bytes:
         # 1) Redact text tokens selected by LLM
         for w in page_info["words"]:
             if w["id"] in redact_ids:
-                rect = fitz.Rect(w["x0"], w["y0"], w["x1"], w["y1"])
+                rect = pymupdf.Rect(w["x0"], w["y0"], w["x1"], w["y1"])
                 page.add_redact_annot(rect, fill=(0, 0, 0))
 
         # 2) Redact ALL images on this page (profile photo etc.)
