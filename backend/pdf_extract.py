@@ -1,5 +1,5 @@
 import base64
-import fitz  # PyMuPDF
+import pymupdf  # PyMuPDF
 import os
 
 def extract_text(pdf_input):
@@ -10,7 +10,7 @@ def extract_text(pdf_input):
         # Assume input is already bytes (e.g., uploaded file)
         pdf_bytes = pdf_input
 
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
     return text
 
