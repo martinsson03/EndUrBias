@@ -3,7 +3,7 @@
 import { Input } from "@/components/shadcn/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/shadcn/ui/nativeSelect";
 import { FormEvent, useState } from "react";
-import { CvDropzone } from "./cvDropzone";
+import { CvDropzone } from "./cvDropzoneClient";
 import { Button } from "@/components/shadcn/ui/button";
 
 type ApplyJobClientProps = {
