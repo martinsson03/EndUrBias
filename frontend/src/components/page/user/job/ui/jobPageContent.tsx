@@ -6,6 +6,7 @@ import JobViewModel from "@/lib/models/view/jobViewModel";
 import Link from "next/link";
 
 import { MapPin, BriefcaseBusiness } from "lucide-react";
+import ApplyJobClient from "./applyJobClient";
 
 type JobPageContentProps = {
     job: JobViewModel
@@ -27,18 +28,18 @@ export default function JobPageContent({ job }: JobPageContentProps) {
                     </div>
                 </div>
 
-                <Link href={``} className="self-end"><Button>Apply to this job!</Button></Link>
+                <Link href={`#apply`} className="self-end"><Button>Apply for this role!</Button></Link>
             </div>
 
             <SeperatorHorizontal></SeperatorHorizontal>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <MarkdownFormatter markdown={job.Description}></MarkdownFormatter>
             </div>
 
             <SeperatorHorizontal></SeperatorHorizontal>
             
-            
+            <ApplyJobClient id="apply"></ApplyJobClient>
         </div>
     );
 }
