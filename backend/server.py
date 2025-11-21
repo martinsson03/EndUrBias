@@ -1,24 +1,35 @@
-from fastapi import FastAPI, HTTPException, Query, Path, Body
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Optional, List
 import base64
-from extract import extract_text
+from pdf_extract import extract_text
 
 # Create the FastAPI instance
 app = FastAPI()
 
 class AnonymizeRequest(BaseModel):
-    name: str
-    data: str
+    jobId: int
+    firstName: str
+    lastName: str
+    gender: str
+    email: str
+    phone: str
+    cvBase64: str
+    
+
+class AnonymizeResponse(BaseModel):
+    jobId: int
+    cvBase64: str
 
 @app.get("/")
 def read_root():
-    return HTTPException(status_code=400, detail="API up and running!")
+    return HTTPException(status_code=400, detail="Faulty endpoint")
 
-@app.post("/anonym")
+@app.post("/anonymize")
 def anonymise(request: AnonymizeRequest):
     try:
-        decoded_bytes = base64.b64decode(request.data)
+        decoded_bytes = base64.b64decode(request.cvBase64)
         text = extract_text(decoded_bytes)
+
+        return AnonymizeResponse(jobId=request.jobId, cvBase64=base64.encode(text))
     except Exception as e:
         return HTTPException(status_code=400, detail=f"An error occured: {str(e)}")
