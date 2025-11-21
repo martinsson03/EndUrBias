@@ -3,11 +3,18 @@ import { Card, CardDescription, CardFooter, CardHeader } from "../shadcn/ui/card
 import { Badge } from "../shadcn/ui/badge";
 import Link from "next/link";
 import { Button } from "../shadcn/ui/button";
+import { cn } from "@/lib/shadcn/utils";
+
+type JobDetailsProps = {
+    job: JobViewModel,
+    children?: React.ReactNode,
+    className?: string
+}
 
 // A visual element on the page containing the job details.
-export default function JobDetails(job: JobViewModel) {
+export default function JobDetails({ job, children, className }: JobDetailsProps) {
     return (
-        <div>
+        <div className={cn(className)}>
             <Card>
                 <CardHeader>
                     <h5 className="font-bold">{ job.Title }</h5>
@@ -22,7 +29,7 @@ export default function JobDetails(job: JobViewModel) {
 
                 <CardFooter>
                     <CardDescription>
-                        <Link href={`/job/${job.id}`}><Button>Learn more!</Button></Link>
+                        { children }
                     </CardDescription>
                 </CardFooter>
             </Card>

@@ -1,7 +1,7 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/shadcn/ui/pagination";
-import JobDetails from "@/components/ui/jobDetails";
 import { GetAvaibleJobs } from "@/lib/client/services/jobService";
 import JobViewModel from "@/lib/models/view/jobViewModel";
+import JobDetailsUser from "./jobDetailsUser";
 
 const jobs: JobViewModel[] = await GetAvaibleJobs();
 
@@ -13,7 +13,7 @@ export default function PaginatedJobList() {
 
             <div className="grow grid grid-cols-3 gap-5 pb-5">
                 { jobs.map((job, i) =>
-                    <JobDetails key={i} Title={job.Title} Description={job.Description} Extent={job.Extent} Location={job.Location} DateOfTermination={job.DateOfTermination} Company={job.Company} CompanyId={job.CompanyId} Tags={job.Tags} id={job.id}></JobDetails>
+                    <JobDetailsUser key={i} job={job}></JobDetailsUser>
                 )}
             </div>
 
