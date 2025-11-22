@@ -49,7 +49,7 @@ export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | undefined
         return response.rows as T[]; // Try to cast it to the type T!
     }
     catch (error: any) {
-        console.error("Error when creating querying the db: ", error.message || error);
+        console.error("Error when querying the db: ", error.message || error);
 
         return undefined; // If any errors occured, return undefined.
     }
