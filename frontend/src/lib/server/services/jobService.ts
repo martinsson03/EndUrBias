@@ -14,6 +14,11 @@ export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
     throw new Error("Not implemented!");
 }
 
+// Get jobs created by the specific recruiter. User has to be recruiter to return anything useful.
+export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewModel[]> {
+    throw new Error("Not implemented!");
+}
+
 // A recruiter can create a job using the parameters. Returns true if success.
 export async function CreateNewJob(details: UpdateJobRequest): Promise<boolean> {
     throw new Error("Not implemented!");

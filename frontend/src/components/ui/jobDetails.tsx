@@ -29,7 +29,7 @@ export default function JobDetails({ job, children, className }: JobDetailsProps
                 </CardHeader>
 
                 <CardFooter>
-                    <CardDescription>
+                    <CardDescription className="flex gap-2">
                         { children }
                     </CardDescription>
                 </CardFooter>

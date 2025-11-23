@@ -1,12 +1,21 @@
-import PaginatedJobList from "./paginatedJobList";
+import PaginatedContainer from "@/components/ui/paginatedContainer";
 import SearchBar from "./searchBarClient";
+import JobDetailsUser from "./jobDetailsUser";
+import JobViewModel from "@/lib/models/view/jobViewModel";
+import { GetAvaibleJobs } from "@/lib/client/services/jobService";
 
 // Contains the content on the user page.
-export default function UserPageContent() {
+export default async function UserPageContent() {
+    const jobs: JobViewModel[] = await GetAvaibleJobs();
+
     return(
         <div className="flex flex-col gap-10">
             <SearchBar></SearchBar>
-            <PaginatedJobList></PaginatedJobList>
+            <PaginatedContainer label="Jobs found:">
+                { jobs.map((job, i) =>
+                    <JobDetailsUser key={i} job={job}></JobDetailsUser>
+                )}
+            </PaginatedContainer>
         </div>
     );
 }

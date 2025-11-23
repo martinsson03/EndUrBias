@@ -1,23 +1,29 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/shadcn/ui/pagination";
-import { GetAvaibleJobs } from "@/lib/client/services/jobService";
-import JobViewModel from "@/lib/models/view/jobViewModel";
-import JobDetailsUser from "./jobDetailsUser";
+import { cn } from "@/lib/shadcn/utils";
 
-const jobs: JobViewModel[] = await GetAvaibleJobs();
+type PaginatedContainerProps = {
+    children?: React.ReactNode,
+    className?: string,
+    label?: string
+};
 
 // A container for all jobs that is paginated.
-export default function PaginatedJobList() {
+export default function PaginatedContainer({ children, className, label }: PaginatedContainerProps) {
     return (
-        <div className="flex flex-col grow">
-            <h6 className="text-secondary-foreground pb-2">Jobs found:</h6>
+        <div className={cn("flex flex-col grow", className)}>
+            {
+                label ? (<h6 className="text-secondary-foreground pb-2">{ label }</h6>) : null
+            }
 
             <div className="grow grid grid-cols-3 gap-5 pb-5">
-                { jobs.map((job, i) =>
-                    <JobDetailsUser key={i} job={job}></JobDetailsUser>
-                )}
+                { children }
             </div>
 
-            <Pagination>
+            {
+                children ? null : (<p className="text-center text-secondary-foreground p-20">No data avaible!</p>)
+            }
+
+            <Pagination className="pb-4">
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious href="#" />

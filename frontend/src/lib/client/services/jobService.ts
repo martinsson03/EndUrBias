@@ -82,7 +82,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 
 // Returns all details of a job by an id.
 export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
-    const job: JobViewModel = {
+    const jobTemp: JobViewModel = {
         id: "514142",
         Title: "Grave plunderer - free loot",
         Company: "Plunder AB",
@@ -94,7 +94,51 @@ export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
         DateOfTermination: new Date()
     }
 
-    return job;
+    return jobTemp;
+
+    throw new Error("Not implemented!");
+}
+
+// Get jobs created by the specific recruiter. User has to be a recruiter for this to return anything!
+export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewModel[]> {
+    const jobsTemp: JobViewModel[] = [
+        {
+            id: "514145",
+            Title: "Cloud Sculptor",
+            Company: "SkyWorks",
+            CompanyId: "98123",
+            Location: "Malmö",
+            Extent: "Contract",
+            Description: "Shape clouds into pleasant forms for local weather broadcasts.",
+            Tags: ["Creative", "Outdoor", "Weather"],
+            DateOfTermination: new Date()
+        },
+        {
+            id: "514146",
+            Title: "Goblin Negotiator",
+            Company: "Peacekeepers Guild",
+            CompanyId: "55321",
+            Location: "Gothenburg",
+            Extent: "Full-time",
+            Description: "Mediate disputes between local goblin tribes and city residents.",
+            Tags: ["Diplomacy", "Fantasy", "Negotiation"],
+            DateOfTermination: new Date()
+        },
+        {
+            id: "514147",
+            Title: "Time-Travel Tour Guide",
+            Company: "ChronoTrips",
+            CompanyId: "47110",
+            Location: "Stockholm",
+            Extent: "Part-time",
+            Description: "Guide customers safely through various centuries and prevent historical paradoxes.",
+            Tags: ["History", "Adventure", "Travel"],
+            DateOfTermination: new Date()
+        }
+    ];
+
+    return jobsTemp;
+
 
     throw new Error("Not implemented!");
 }

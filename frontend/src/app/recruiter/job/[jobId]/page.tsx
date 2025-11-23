@@ -1,7 +1,7 @@
 "use server"
 
 import NotFound from "@/app/not-found";
-import JobPageContent from "@/components/page/recruiter/ui/job/ui/jobPageContent";
+import JobPageContent from "@/components/page/recruiter/job/ui/jobPageContent";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/shadcn/ui/breadcrumb";
 import { PageContentContainer } from "@/components/ui/pageContentContainer";
 import { GetJobById } from "@/lib/client/services/jobService";
