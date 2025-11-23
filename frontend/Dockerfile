@@ -2,12 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /frontend
 
-COPY package*.json ./
-
-RUN npm install --production
-
 COPY . .
 
-EXPOSE 3000
+RUN npm install
 
-CMD ["node", "index.js"]
+ENV PORT=4000
+EXPOSE 4000
+
+CMD ["npm", "run", "dev"]
