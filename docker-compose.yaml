@@ -18,8 +18,8 @@ services:
     container_name: postgres
     restart: unless_stoped
     environment:
-      POSTGRES_USER: ${EUB_DB_USERNAME}
-      POSTGRES_PASSWORD: ${EUB_DB_PASSWORD}
-      POSTGRES_DB: ${EUB_DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${EUV_DB_PORT}:5432"
+      - "${DB_PORT}:5432"

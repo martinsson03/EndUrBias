@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stoped
+    volumes:
+      - ./postgres/startup.sh:/startup.sh
+      - ./postgres/setup.sql:/setup.sql
+    command: ["bash", "/startup.sh"]
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
