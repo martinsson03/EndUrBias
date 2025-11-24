@@ -1,6 +1,7 @@
 "use server"
 
 import NotFound from "@/app/not-found";
+import TalentpoolPageContent from "@/components/page/recruiter/talentpool/ui/talentpoolPageContent";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/shadcn/ui/breadcrumb";
 import { PageContentContainer } from "@/components/ui/pageContentContainer";
 import { GetJobById } from "@/lib/client/services/jobService";
@@ -43,6 +44,8 @@ export default async function Job({ params }: JobProps) {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
+
+            <TalentpoolPageContent></TalentpoolPageContent>
         </PageContentContainer>
     );
 }

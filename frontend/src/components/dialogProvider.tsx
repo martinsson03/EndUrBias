@@ -1,9 +1,10 @@
+"use client"
+
 import { createContext, useContext, useState } from "react";
-import { Button } from "./shadcn/ui/button";
-import { X } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./shadcn/ui/dialog";
 
 type DialogContextType = {
-    openDialog:  (node: React.ReactNode) => void;
+    openDialog:  (title: string, description: string, node: React.ReactNode) => void;
     closeDialog: () => void;
 };
 
@@ -15,8 +16,11 @@ type DialogProviderProps = {
 
 export default function DialogProvider({ children }: DialogProviderProps) {
     const [content, setContent] = useState<React.ReactNode>(null); // The content of the page.
+    const [open, setOpen] = useState(false); // The state of the dialog.
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
-    const openDialog  = (node: React.ReactNode) => setContent(node);
+    const openDialog  = (title: string, description: string, node: React.ReactNode) => { setContent(node); setOpen(true); setTitle(title); setDescription(description); }
     const closeDialog = () => setContent(null);
 
     return (
@@ -26,8 +30,17 @@ export default function DialogProvider({ children }: DialogProviderProps) {
             </div>
             {
                 content && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-foreground/50">
-                        <Button size="icon" onClick={closeDialog}><X></X></Button>
+                    <div className="fixed inset-0 flex items-center justify-center">
+                        <Dialog open={open} onOpenChange={(val) => !val && closeDialog()}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>{ title }</DialogTitle>
+                                    <DialogDescription>{ description }</DialogDescription>
+                                </DialogHeader>
+                                
+                                { content }
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 )
             }
