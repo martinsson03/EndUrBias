@@ -8,9 +8,7 @@ export async function GET(request: NextRequest) {
 
   // If we get here without a code, something went wrong
   if (!code) {
-    const redirectUrl = new URL("/", url.origin);
-    redirectUrl.searchParams.set("error", "missing_code");
-    return NextResponse.redirect(redirectUrl.toString());
+    return redirectToErrorPage(url, "missing_code");
   }
 
   // Exchange the authorization code for tokens
@@ -27,12 +25,11 @@ export async function GET(request: NextRequest) {
     }).toString(),
   });
 
+  // If token request fails
   if (!tokenResponse.ok) {
     const errorBody = await tokenResponse.json();
-    let error = errorBody.error_description || errorBody.error || "token_request_failed";
-    const redirectUrl = new URL("/", url.origin);
-    redirectUrl.searchParams.set("error", error);
-    return NextResponse.redirect(redirectUrl.toString());
+    const error = errorBody.error_description || errorBody.error || "token_request_failed";
+    return redirectToErrorPage(url, error);
   }
 
   // Get the tokens
@@ -42,36 +39,39 @@ export async function GET(request: NextRequest) {
 
   // Verify and decode the JWT token using jose
   const decodedIdToken = await jwtVerify(idToken, new TextEncoder().encode("dev-secret-change-me"));
-
+  
   // Get the user role from the decoded token payload
   const userRole = decodedIdToken.payload.role;
 
   // Redirect based on the user role
   let redirectUrl = new URL("/", url.origin);
-
   if (userRole === "recruiter") {
-    redirectUrl = new URL("/recruiter", url.origin); // Redirect to recruiter page
+    redirectUrl = new URL("/recruiter", url.origin);
   } else if (userRole === "user") {
-    redirectUrl = new URL("/user", url.origin); // Redirect to user page
+    redirectUrl = new URL("/user", url.origin);
   }
 
-  // Set the cookies for the tokens without httpOnly for development
-const response = NextResponse.redirect(redirectUrl.toString());
-response.cookies.set("access_token", accessToken, {
-  secure: process.env.NODE_ENV === "production", // Ensure secure cookies only in production
-  sameSite: "lax",
-  path: "/",
-  maxAge: 60 * 60, // 1 hour
-});
-response.cookies.set("id_token", idToken, {
-  secure: process.env.NODE_ENV === "production", // Ensure secure cookies only in production
-  sameSite: "lax",
-  path: "/",
-  maxAge: 60 * 60, // 1 hour
-});
+  // Set the cookies for the tokens
+  const response = NextResponse.redirect(redirectUrl.toString());
+  response.cookies.set("access_token", accessToken, {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60, // 1 hour
+  });
+  response.cookies.set("id_token", idToken, {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60, // 1 hour
+  });
 
+  return response;
+}
 
-
-
-return response;
+// Helper function to handle error redirects
+function redirectToErrorPage(url: URL, error: string) {
+  const redirectUrl = new URL("/", url.origin);
+  redirectUrl.searchParams.set("error", error);
+  return NextResponse.redirect(redirectUrl.toString());
 }

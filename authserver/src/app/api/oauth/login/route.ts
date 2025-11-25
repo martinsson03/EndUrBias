@@ -3,9 +3,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   createAuthorizationCode,
-  createSession,
   findClient,
   findUserByEmailAndPassword,
+  createAccessToken,
+  createIdToken,
 } from "@/lib/auth";
 
 /**
@@ -27,7 +28,6 @@ import {
  *     and keep client_id / redirect_uri so the form can be re-rendered.
  *
  *  4. If login is OK:
- *      - create a session (sid cookie on the auth server)
  *      - create an authorization code (one-time code tied to user+client+redirectUri)
  *      - redirect the browser back to the frontend:
  *            redirect_uri?code=...
@@ -80,9 +80,12 @@ export async function POST(request: NextRequest) {
     return redirectToLoginWithError("Invalid email or password");
   }
 
-  // Create session + authorization code
-  const sid = createSession(user.id);
+  // Create authorization code
   const code = createAuthorizationCode(user.id, client.id, redirectUri);
+
+  // Generate the access token and id token
+  const accessToken = await createAccessToken(user, client.id);
+  const idToken = await createIdToken(user, client.id);
 
   const redirectUrl = new URL(redirectUri);
   redirectUrl.searchParams.set("code", code);
@@ -91,12 +94,18 @@ export async function POST(request: NextRequest) {
     status: 302,
   });
 
-  // Attach the sid cookie so the browser is "logged in" at the auth server.
-  response.cookies.set("sid", sid, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+  // Add the tokens to the response as cookies (no session)
+  response.cookies.set("access_token", accessToken, {
+    secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
     sameSite: "lax",
     path: "/",
+    maxAge: 60 * 60, // 1 hour
+  });
+  response.cookies.set("id_token", idToken, {
+    secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60, // 1 hour
   });
 
   return response;

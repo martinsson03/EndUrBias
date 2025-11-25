@@ -9,42 +9,31 @@ export default function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [role, setRole] = useState<string | null>(null); // To store the user's role
-  const router = useRouter(); // For programmatic navigation
+  const [role, setRole] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Only run in the browser
-      const idToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("id_token="))
-        ?.split("=")[1];
+    const idToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("id_token="))
+      ?.split("=")[1];
 
-      console.log("id_token from cookies:", idToken); // Log the raw id_token
-
-      if (idToken) {
-        // Check if the token follows the JWT structure (should be 3 parts)
-        const tokenParts = idToken.split(".");
-        if (tokenParts.length === 3) {
-          console.log("Valid JWT format detected.");
-          try {
-            const decoded = JSON.parse(atob(tokenParts[1])); // Decoding the JWT token
-            console.log("Decoded JWT:", decoded); // Log the decoded JWT
-            setRole(decoded.role); // Assuming the role is part of the decoded payload
-          } catch (error) {
-            console.error("Error decoding JWT:", error);
-          }
-        } else {
-          console.error("Invalid JWT format:", idToken); // Log error if the format is wrong
-        }
-      } else {
-        console.error("id_token not found in cookies");
+    if (idToken) {
+      try {
+        // Decode JWT and extract role
+        const decoded = JSON.parse(atob(idToken.split(".")[1]));
+        setRole(decoded.role); // Assuming the role is part of the decoded payload
+      } catch (error) {
+        console.error("Error decoding JWT:", error);
+        setRole(null); // In case decoding fails, set role to null
       }
+    } else {
+      console.error("id_token not found in cookies");
     }
   }, []);
 
   useEffect(() => {
-    console.log("Role from decoded JWT:", role); // Log the role to verify
+  
 
     if (role && role !== "user") {
       // Redirect to unauthorized page if role is not 'user'

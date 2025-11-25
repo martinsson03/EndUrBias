@@ -1,5 +1,3 @@
-// src/lib/auth.ts
-
 import { randomUUID } from "crypto";
 import { SignJWT } from "jose";
 
@@ -20,11 +18,6 @@ export type Client = {
   name: string;
   secret: string; // used later by /token if I want confidential clients
   redirectUris: string[]; // exact redirect URIs this client is allowed to use
-};
-
-// Session definition
-type SessionEntry = {
-  userId: string;
 };
 
 // Authorization code definition
@@ -83,16 +76,6 @@ const clients: Client[] = [
 // Helper for looking up a client_id in the list above.
 export function findClient(clientId: string): Client | undefined {
   return clients.find((c) => c.id === clientId);
-}
-
-// ========= Sessions =========
-
-const sessions = new Map<string, SessionEntry>();
-
-export function createSession(userId: string): string {
-  const sid = randomUUID();
-  sessions.set(sid, { userId });
-  return sid;
 }
 
 // ========= Authorization codes =========
