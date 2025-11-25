@@ -9,14 +9,13 @@ import { useMemo } from "react";
  * Props that get passed from the server-side /login page.
  *
  * These all come from query parameters on:
- *   http://localhost:4000/login?client_id=...&redirect_uri=...&state=...&error=...
+ *   http://localhost:4000/login?client_id=...&redirect_uri=...
  *
  * The <LoginForm /> itself is a **client component**, so I take plain strings.
  */
 type LoginFormProps = {
   clientId: string;
   redirectUri: string;
-  state: string;
   error: string;
 };
 
@@ -25,12 +24,12 @@ type LoginFormProps = {
  *
  * This component renders:
  *  - the actual login form UI
- *  - hidden fields for OAuth2 (client_id, redirect_uri, state)
+ *  - hidden fields for OAuth2 (client_id, redirect_uri)
  *  - a password + email input
  *  - nice error UI if something went wrong
  *
  * When submitted, it POSTs to:
- *   /api/oauth/login   (the login route handler in the authserver)
+ *   /api/oauth/login   (the login route handler in the auth server)
  *
  * Important:
  *  - This is a "use client" component → it runs in the browser.
@@ -40,7 +39,6 @@ type LoginFormProps = {
 export function LoginForm({
   clientId,
   redirectUri,
-  state,
   error,
 }: LoginFormProps) {
   /**
@@ -84,13 +82,11 @@ export function LoginForm({
          * The hidden inputs are CRUCIAL — this is how the login route knows:
          *   - which client is asking to authenticate
          *   - where to redirect the user after login
-         *   - what state value to echo back
-         */}
+         */} 
         <form method="POST" action="/api/oauth/login" className="space-y-4">
           {/* --- Hidden OAuth2 parameters --- */}
           <input type="hidden" name="client_id" value={clientId} />
           <input type="hidden" name="redirect_uri" value={redirectUri} />
-          <input type="hidden" name="state" value={state} />
 
           {/* --- Email field --- */}
           <div className="space-y-1">
@@ -132,7 +128,7 @@ export function LoginForm({
           <p className="text-[11px] leading-relaxed text-slate-400">
             Demo accounts:
             <br />
-            user@example.com · recruiter@example.com · admin@example.com
+            user@example.com · recruiter@example.com
             <br />
             Password:{" "}
             <span className="font-semibold text-slate-200">password</span>
@@ -145,18 +141,6 @@ export function LoginForm({
           >
             Continue
           </Button>
-
-          {/* --- Role explanations (nice for dev/testing) --- */}
-          <p className="mt-3 text-[11px] text-slate-500">
-            Roles:
-            <br />
-            user@example.com → <span className="font-medium">user</span>
-            <br />
-            recruiter@example.com →{" "}
-            <span className="font-medium">recruiter</span>
-            <br />
-            admin@example.com → <span className="font-medium">admin</span>
-          </p>
         </form>
       </div>
     </div>

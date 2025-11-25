@@ -10,7 +10,6 @@ import { LoginForm } from "@/components/login-form";
  * The URL can contain the following query parameters:
  *   - client_id
  *   - redirect_uri
- *   - state
  *   - error  (error message from previous failed login attempt)
  *
  * This component is a **server component**. It reads the query parameters
@@ -18,13 +17,10 @@ import { LoginForm } from "@/components/login-form";
  * component that actually renders the form.
  */
 
-// In Next 16, searchParams is provided as a Promise in server components,
-// so I type it that way and make the component async.
 type LoginPageProps = {
   searchParams: Promise<{
     client_id?: string;
     redirect_uri?: string;
-    state?: string;
     error?: string;
   }>;
 };
@@ -35,15 +31,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const clientId = params.client_id ?? "";
   const redirectUri = params.redirect_uri ?? "";
-  const state = params.state ?? "";
   const error = params.error ?? "";
 
   return (
-    <LoginForm
-      clientId={clientId}
-      redirectUri={redirectUri}
-      state={state}
-      error={error}
-    />
+    <LoginForm clientId={clientId} redirectUri={redirectUri} error={error} />
   );
 }

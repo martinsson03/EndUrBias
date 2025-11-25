@@ -8,10 +8,10 @@ import { NextResponse } from "next/server";
  * has logged in at the auth server.
  *
  * URL looks like:
- *   GET /auth/callback?code=...&state=...
+ *   GET /auth/callback?code=...
  *
  * High-level flow:
- *  1. Read "code" (and optionally "state") from the query string.
+ *  1. Read "code" from the query string.
  *  2. Server-side POST to the auth server's /api/oauth/token endpoint
  *     with that code, to swap it for tokens.
  *  3. If the token request fails → redirect back to "/" with an error.
@@ -23,24 +23,17 @@ import { NextResponse } from "next/server";
  * The user never sees a "callback page", it's just a backend hop.
  */
 export async function GET(request: NextRequest) {
-  // I get the full URL so I can read code + state.
   const url = request.nextUrl;
   const code = url.searchParams.get("code");
-  const state = url.searchParams.get("state") ?? "";
 
   // If we get here without a code, something went wrong in the redirect
-  // from the auth server. Easiest is to just go back to the start page
-  // and show an error.
   if (!code) {
     const redirectUrl = new URL("/", url.origin);
     redirectUrl.searchParams.set("error", "missing_code");
     return NextResponse.redirect(redirectUrl.toString());
   }
 
-  // --- Step 2: Exchange the authorization code for tokens ----------------
-
-  // This call happens on the **server side**, so I don't have CORS issues.
-  // I'm basically acting as the "confidential client" here.
+  // Exchange the authorization code for tokens
   const tokenResponse = await fetch("http://localhost:4000/api/oauth/token", {
     method: "POST",
     headers: {
@@ -54,11 +47,9 @@ export async function GET(request: NextRequest) {
     }).toString(),
   });
 
-  // If the token endpoint says "nope", I try to extract a nice error message,
-  // otherwise I fall back to a generic one and send the user back to "/".
+  // Handle token request failure
   if (!tokenResponse.ok) {
     let error = "token_request_failed";
-
     try {
       const errorBody = await tokenResponse.json();
       if (errorBody.error_description) {
@@ -67,7 +58,7 @@ export async function GET(request: NextRequest) {
         error = errorBody.error;
       }
     } catch {
-      // If JSON parsing fails I just keep the generic error string.
+      // If JSON parsing fails, keep the generic error
     }
 
     const redirectUrl = new URL("/", url.origin);
@@ -75,33 +66,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(redirectUrl.toString());
   }
 
-  // At this point the token call worked, so I expect a JSON payload with:
-  //  - access_token
-  //  - id_token
-  //  - token_type
-  //  - expires_in
+  // Handle successful token response
   const tokens = await tokenResponse.json();
   const accessToken = tokens.access_token as string;
   const idToken = tokens.id_token as string;
 
-  // --- Step 3: Redirect the user back into the app -----------------------
-
-  // Later I might want to use `state` to remember "where the user wanted to go",
-  // but for now I always redirect to "/".
+  // Redirect back to the app
   const redirectUrl = new URL("/", url.origin);
-  if (state) {
-    // I still propagate state, just in case I want to inspect it on "/".
-    redirectUrl.searchParams.set("state", state);
-  }
 
   const response = NextResponse.redirect(redirectUrl.toString());
 
-  // --- Step 4: Store tokens as cookies on the frontend domain ------------
-
-  // access_token cookie:
-  //  - httpOnly so it can't be read from JS
-  //  - used by the frontend server (or API routes) when it needs to call
-  //    the backend / resource server on behalf of the user.
+  // Store tokens as cookies on the frontend
   response.cookies.set("access_token", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -110,10 +85,6 @@ export async function GET(request: NextRequest) {
     maxAge: 60 * 60, // 1 hour in seconds
   });
 
-  // id_token cookie:
-  //  - also httpOnly here (I could choose to expose it to JS later if needed)
-  //  - mainly useful if I build a "who am I?" endpoint that decodes it
-  //    and returns user info (email, role, etc.) to the frontend.
   response.cookies.set("id_token", idToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

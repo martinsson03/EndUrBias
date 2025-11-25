@@ -35,19 +35,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-
-
-
-
-
 ## This part describes how to run a full end-to-end test to verify that the flow works correctly.
-
 
 Auth Server: http://localhost:4000
 
 Frontend (Client): http://localhost:3000
-
-
 
 1. Start both servers
 
@@ -56,12 +48,10 @@ Authserver (port 4000):
 cd authserver
 npm run dev
 
-
 Frontend (port 3000):
 
 cd frontend
 npm run dev
-
 
 Both servers should start without errors.
 
@@ -71,15 +61,13 @@ Navigate to:
 
 http://localhost:3000/
 
-
 You should see the End Your Bias landing page.
 
 3. Begin the OAuth login flow
 
 Open the following URL in the browser:
 
-http://localhost:4000/login?client_id=eyb-frontend&redirect_uri=http://localhost:3000/auth/callback&state=xyz
-
+http://localhost:4000/login?client_id=eyb-frontend&redirect_uri=http://localhost:3000/auth/callback
 
 You should see the EYB Auth Server login page.
 
@@ -91,12 +79,9 @@ user@example.com
 
 recruiter@example.com
 
-admin@example.com
-
 All demo accounts use the password:
 
 password
-
 
 Click Continue.
 
@@ -105,19 +90,18 @@ Expected behavior:
 The authserver validates the credentials.
 
 The authserver redirects to:
-http://localhost:3000/auth/callback?code=...&state=xyz
+http://localhost:3000/auth/callback?code=...
 
 The frontend exchanges the code for tokens via the authserver.
 
 The frontend redirects the user to:
-http://localhost:3000/?state=xyz
+http://localhost:3000/
 
 5. Verify authentication cookies
 
 In the browser, open Developer Tools → Application (or Storage) → Cookies for:
 
 http://localhost:3000
-
 
 You should see the following cookies set:
 
