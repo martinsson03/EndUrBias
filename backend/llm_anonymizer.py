@@ -1,6 +1,6 @@
 import os
 import json
-import pymupdf  # from PyMuPDF
+import pymupdf
 from dotenv import load_dotenv
 from groq import Groq
 
@@ -91,7 +91,7 @@ def ask_llm_for_redactions(pages):
     raw = completion.choices[0].message.content or ""
     print("Groq raw response:", repr(raw))
 
-    # Try to parse JSON robustly
+    # Try to parse JSON
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
@@ -117,38 +117,36 @@ def ask_llm_for_redactions(pages):
 
 def anonymize_pdf_with_llm(pdf_bytes: bytes) -> bytes:
     """
-    Main entry point used by server.py.
+    Main entry point used by server.py
     Takes raw PDF bytes, returns anonymized PDF bytes.
     """
     # Extract all words/positions from PDF
     pages = extract_words_with_positions(pdf_bytes)
 
-    # For now, only send the first page to the LLM (cheaper while testing)
-    pages_for_llm = pages #[:1]
+    # pages = pages #[:1] first page
 
-    # Ask Groq which word IDs to redact
-    redact_ids = set(ask_llm_for_redactions(pages_for_llm))
+    # Ask LLM which word IDs to redact
+    redact_ids = set(ask_llm_for_redactions(pages))
 
     # Re-open the PDF and apply redactions
     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
-    for page_info in pages_for_llm:
+    for page_info in pages:
         page_index = page_info["page"]
         page = doc[page_index]
 
-        # 1) Redact text tokens selected by LLM
+        # Redact text tokens selected by LLM
         for w in page_info["words"]:
             if w["id"] in redact_ids:
                 rect = pymupdf.Rect(w["x0"], w["y0"], w["x1"], w["y1"])
                 page.add_redact_annot(rect, fill=(0, 0, 0))
 
-        # 2) Redact ALL images on this page (profile photo etc.)
+        # Redact ALL images on this page
         for img in page.get_images(full=True):
             xref = img[0]  # image reference
             for rect in page.get_image_rects(xref):
                 page.add_redact_annot(rect, fill=(0, 0, 0))
 
-        # Apply all redactions for this page
         page.apply_redactions()
 
     return doc.write()

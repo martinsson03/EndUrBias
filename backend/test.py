@@ -1,12 +1,13 @@
 import base64
 import requests
+from CV_path import PDF_FILE_PATH
 
 # --- Configuration ---
 URL = "http://localhost:8000/anonymize"  # FastAPI URL
-PDF_FILE = "/Users/emanuelpeterson/School/CV/Jesper Wärn CV.pdf"  # path to your PDF
+#PDF_FILE = "/Users/emanuelpeterson/School/CV/Jesper Wärn CV.pdf"  # path to your PDF
 
 # --- Read and encode PDF ---
-with open(PDF_FILE, "rb") as f:
+with open(PDF_FILE_PATH, "rb") as f:
     pdf_bytes = f.read()
 
 cv_base64 = base64.b64encode(pdf_bytes).decode("utf-8")
