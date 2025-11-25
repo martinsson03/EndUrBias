@@ -95,7 +95,7 @@ http://localhost:3000/auth/callback?code=...
 The frontend exchanges the code for tokens via the authserver.
 
 The frontend redirects the user to:
-http://localhost:3000/
+http://localhost:3000/ (depending on user or recruiter account)
 
 5. Verify authentication cookies
 
