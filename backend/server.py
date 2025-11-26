@@ -1,20 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import base64
-from pdf_extract import extract_text
+from llm_anonymizer import anonymize_pdf_with_llm
 
-# Create the FastAPI instance
 app = FastAPI()
 
 class AnonymizeRequest(BaseModel):
     jobId: int
-    firstName: str
-    lastName: str
-    gender: str
-    email: str
-    phone: str
     cvBase64: str
-    
 
 class AnonymizeResponse(BaseModel):
     jobId: int
@@ -29,12 +22,12 @@ def read_root():
 def demo():
     return {"message": "This is a demo endpoint"}
 
-@app.post("/anonymize")
+@app.post("/anonymize", response_model=AnonymizeResponse)
 def anonymise(request: AnonymizeRequest):
     try:
         decoded_bytes = base64.b64decode(request.cvBase64)
-        text = extract_text(decoded_bytes)
-
-        return AnonymizeResponse(jobId=request.jobId, cvBase64=base64.encode(text))
+        anonymized_bytes = anonymize_pdf_with_llm(decoded_bytes)
+        encoded = base64.b64encode(anonymized_bytes).decode("utf-8")
+        return AnonymizeResponse(jobId=request.jobId, cvBase64=encoded)
     except Exception as e:
-        return HTTPException(status_code=400, detail=f"An error occured: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"An error occured: {str(e)}")
