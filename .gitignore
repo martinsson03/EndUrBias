@@ -5,3 +5,4 @@ __pycache__
 .env
 backend/__pycache__/server.cpython-312.pyc
 backend/decoded_cv.pdf
+decoded_cv.pdf
