@@ -14,7 +14,7 @@ export default function RealCv({ cv }: RealCvProps) {
 
     return (
         <div className="overflow-y-scroll">
-            <Document file={pdfData} onLoad={({ numPages }) => setPages(numPages)}>
+            <Document file={pdfData} onLoad={({ numPages }) => setPages(numPages)} onLoadError={console.error}>
                 {
                     Array.from(new Array(pages), (_, index) => 
                         (<Page key={index + 1} pageNumber={index + 1} renderTextLayer={false} renderAnnotationLayer={false}></Page>))
