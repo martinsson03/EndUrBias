@@ -1,0 +1,9 @@
+services:
+  postgres:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - "${POSTGRES_PORT}:5432"

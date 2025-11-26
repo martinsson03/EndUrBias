@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggle from "./themeToggle";
+import ThemeToggle from "../../ui/themeToggle";
 
 // Header for the website.
 export default function Header() {
@@ -9,4 +9,4 @@ export default function Header() {
             <ThemeToggle></ThemeToggle>
         </div>
     );
-};
+}
