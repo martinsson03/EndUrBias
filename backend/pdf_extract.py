@@ -7,7 +7,7 @@ def extract_text(pdf_input):
     if isinstance(pdf_input, str):
         pdf_bytes = base64.b64decode(pdf_input)
     else:
-        # Assume input is already bytes (e.g., uploaded file)
+        # Assume input is already bytes
         pdf_bytes = pdf_input
 
     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")

@@ -11,5 +11,5 @@ dependencies = [
     "websockets==11.0.3",
     "pymupdf>=1.26.6",
     "spacy>=3.8.9",
-    "groq>=0.36.0",
+    "openai>=2.8.1",
 ]
