@@ -22,7 +22,12 @@ class AnonymizeResponse(BaseModel):
 
 @app.get("/")
 def read_root():
-    return HTTPException(status_code=400, detail="Faulty endpoint")
+    return {"Hello": "World"}
+    # return HTTPException(status_code=400, detail="Faulty endpoint")
+
+@app.get("/demo")
+def demo():
+    return {"message": "This is a demo endpoint"}
 
 @app.post("/anonymize")
 def anonymise(request: AnonymizeRequest):
