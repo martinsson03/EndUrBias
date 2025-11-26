@@ -18,9 +18,10 @@ def read_root():
     return {"Hello": "World"}
     # return HTTPException(status_code=400, detail="Faulty endpoint")
 
-@app.get("/demo")
+@app.post("/demo")
 def demo():
-    return {"message": "This is a demo endpoint"}
+    
+    return {"message": "Hello from backend!"}
 
 @app.post("/anonymize", response_model=AnonymizeResponse)
 def anonymise(request: AnonymizeRequest):
