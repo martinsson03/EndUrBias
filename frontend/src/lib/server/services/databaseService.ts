@@ -40,7 +40,7 @@ export async function ReleaseSqlClient(client: PoolClient): Promise<void> {
 }
 
 // Function for making a sql query and returning the object.
-export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | undefined> {
+export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | null> {
     const client = await GetSqlClient();
 
     try {
@@ -51,7 +51,7 @@ export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | undefined
     catch (error: any) {
         console.error("Error when querying the db: ", error.message || error);
 
-        return undefined; // If any errors occured, return undefined.
+        return null; // If any errors occured, return null.
     }
     finally {
         await ReleaseSqlClient(client); // Release the resource.

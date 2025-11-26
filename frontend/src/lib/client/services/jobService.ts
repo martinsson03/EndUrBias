@@ -81,7 +81,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 }
 
 // Returns all details of a job by an id.
-export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
+export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
     const jobTemp: JobViewModel = {
         id: "514142",
         Title: "Grave plunderer - free loot",

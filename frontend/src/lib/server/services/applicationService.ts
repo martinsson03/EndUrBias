@@ -11,7 +11,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
 }
 
 // Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
-export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | undefined> {
+export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | null> {
     throw new Error("Not implemented!");
 }
 

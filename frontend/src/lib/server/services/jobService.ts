@@ -10,7 +10,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 }
 
 // Returns all details of a job by an id.
-export async function GetJobById(jobId: id): Promise<JobViewModel | undefined> {
+export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
     throw new Error("Not implemented!");
 }
 
