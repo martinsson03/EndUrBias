@@ -1,7 +1,9 @@
 "use client"
 
 import { createContext, useContext, useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./shadcn/ui/dialog";
+import { Card } from "./shadcn/ui/card";
+import { Button } from "./shadcn/ui/button";
+import { X } from "lucide-react";
 
 type DialogContextType = {
     openDialog:  (title: string, description: string, node: React.ReactNode) => void;
@@ -30,17 +32,13 @@ export default function DialogProvider({ children }: DialogProviderProps) {
             </div>
             {
                 content && (
-                    <div className="fixed inset-0 flex items-center justify-center">
-                        <Dialog open={open} onOpenChange={(val) => !val && closeDialog()}>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>{ title }</DialogTitle>
-                                    <DialogDescription>{ description }</DialogDescription>
-                                </DialogHeader>
-                                
-                                { content }
-                            </DialogContent>
-                        </Dialog>
+                    <div className="fixed inset-0 flex items-center justify-center bg-primary/50" onClick={() => closeDialog()}>
+                        <Card className="relative p-5 pt-12 max-w-[90%] max-h-[90%]" onClick={(e) => e.stopPropagation()}>
+                            <Button size="icon" variant="outline" className="absolute top-2 right-2" onClick={closeDialog}><X></X></Button>
+                            { title && (<h6>{ title }</h6>) }
+                            { description && (<p className="text-secondary-foreground">{ description }</p>) }
+                            { content }
+                        </Card>
                     </div>
                 )
             }

@@ -14,26 +14,24 @@ type JobDetailsProps = {
 // A visual element on the page containing the job details.
 export default function JobDetails({ job, children, className }: JobDetailsProps) {
     return (
-        <div className={cn(className)}>
-            <Card>
-                <CardHeader>
-                    <h5 className="font-bold">{ job.Title }</h5>
-                    <CardDescription><Link href={`user/company/${job.CompanyId}`} className="italic flex"><BriefcaseBusiness className="pr-1" size={20}></BriefcaseBusiness>{ job.Company }</Link></CardDescription>
-                    <CardDescription className="flex"><MapPin className="pr-1" size={20}></MapPin>{ job.Location } • { job.Extent }</CardDescription>
-                    <CardDescription className="flex"><Clock className="pr-1" size={20}></Clock>Last apply: {job.DateOfTermination.getDay()}/{job.DateOfTermination.getMonth()} - {job.DateOfTermination.getFullYear()}</CardDescription>
-                    <div className="flex gap-1 flex-wrap">
-                        {job.Tags.map((tag, i) => (
-                            <Badge key={i} variant="secondary">{ tag }</Badge>
-                        ))}
-                    </div>
-                </CardHeader>
+        <Card className={cn(className)}>
+            <CardHeader>
+                <h5 className="font-bold">{ job.Title }</h5>
+                <CardDescription><Link href={`user/company/${job.CompanyId}`} className="italic flex"><BriefcaseBusiness className="pr-1" size={20}></BriefcaseBusiness>{ job.Company }</Link></CardDescription>
+                <CardDescription className="flex"><MapPin className="pr-1" size={20}></MapPin>{ job.Location } • { job.Extent }</CardDescription>
+                <CardDescription className="flex"><Clock className="pr-1" size={20}></Clock>Last apply: {job.DateOfTermination.getDay()}/{job.DateOfTermination.getMonth()} - {job.DateOfTermination.getFullYear()}</CardDescription>
+                <div className="flex gap-1 flex-wrap">
+                    {job.Tags.map((tag, i) => (
+                        <Badge key={i} variant="secondary">{ tag }</Badge>
+                    ))}
+                </div>
+            </CardHeader>
 
-                <CardFooter>
-                    <CardDescription className="flex gap-2">
-                        { children }
-                    </CardDescription>
-                </CardFooter>
-            </Card>
-        </div>
+            <CardFooter>
+                <CardDescription className="flex gap-2">
+                    { children }
+                </CardDescription>
+            </CardFooter>
+        </Card>
     );
 }

@@ -45,7 +45,7 @@ export default async function Job({ params }: JobProps) {
                 </BreadcrumbList>
             </Breadcrumb>
 
-            <TalentpoolPageContent></TalentpoolPageContent>
+            <TalentpoolPageContent job={job}></TalentpoolPageContent>
         </PageContentContainer>
     );
 }
