@@ -10,6 +10,7 @@ import CVViewModel from "@/lib/models/view/cvViewModel";
 import JobViewModel from "@/lib/models/view/jobViewModel";
 import { Edit } from "lucide-react";
 import { useEffect, useState } from "react";
+import RealCv from "./realCv";
 
 type CandidateContentProps = {
     job: JobViewModel
@@ -39,7 +40,7 @@ export default function CandidateContent({ job }: CandidateContentProps) {
                     <Button variant="outline" size="icon"><Edit></Edit></Button>
                 </div>
 
-                { /* CV HERE */ }
+                <RealCv cv={application.CV}></RealCv>
 
                 <div className="flex gap-2">
                     <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); success && closeDialog(); }}>Remove candidate</Button>

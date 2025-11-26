@@ -26,11 +26,11 @@ export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewM
 export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[]> {
     const cv: CVViewModel[] = [
         {
-            CV: "PDF FORMAT",
+            CV: "JVBERi0xLjEKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nIC9QYWdlcyAyIDAgUiA+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlIC9QYWdlcyAvS2lkcyBbMyAwIFJdIC9Db3VudCAxID4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAyMDAgMjAwXSA+PgplbmRvYmoKeHJlZgowIDQK MDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAxMCAwMDAwMCBuIAowMDAwMDAwNTMgMDAwMDAgbiAKMDAwMDAwMTAwIDAwMDAwIG4gCnRyYWlsZXIKPDwvUm9vdCAxIDAgUiAvU2l6ZSA0ID4+CnN0YXJ0eHJlZgoxNDc KJSVFT0Y=",
             id: "515123"
         },
         {
-            CV: "PDF FORMAT",
+            CV: "JVBERi0xLjEKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nIC9QYWdlcyAyIDAgUiA+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlIC9QYWdlcyAvS2lkcyBbMyAwIFJdIC9Db3VudCAxID4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAyMDAgMjAwXSA+PgplbmRvYmoKeHJlZgowIDQK MDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAxMCAwMDAwMCBuIAowMDAwMDAwNTMgMDAwMDAgbiAKMDAwMDAwMTAwIDAwMDAwIG4gCnRyYWlsZXIKPDwvUm9vdCAxIDAgUiAvU2l6ZSA0ID4+CnN0YXJ0eHJlZgoxNDc KJSVFT0Y=",
             id: "612323"
         }
     ];
@@ -62,11 +62,11 @@ export async function GetCensoredLookedAtApplications(jobId: id): Promise<Censor
 export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
     const cv: CVViewModel[] = [
         {
-            CV: "PDF FORMAT",
+            CV: "JVBERi0xLjEKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nIC9QYWdlcyAyIDAgUiA+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlIC9QYWdlcyAvS2lkcyBbMyAwIFJdIC9Db3VudCAxID4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAyMDAgMjAwXSA+PgplbmRvYmoKeHJlZgowIDQK MDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAxMCAwMDAwMCBuIAowMDAwMDAwNTMgMDAwMDAgbiAKMDAwMDAwMTAwIDAwMDAwIG4gCnRyYWlsZXIKPDwvUm9vdCAxIDAgUiAvU2l6ZSA0ID4+CnN0YXJ0eHJlZgoxNDc KJSVFT0Y=",
             id: "515123"
         },
         {
-            CV: "PDF FORMAT",
+            CV: "JVBERi0xLjEKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nIC9QYWdlcyAyIDAgUiA+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlIC9QYWdlcyAvS2lkcyBbMyAwIFJdIC9Db3VudCAxID4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAyMDAgMjAwXSA+PgplbmRvYmoKeHJlZgowIDQK MDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAxMCAwMDAwMCBuIAowMDAwMDAwNTMgMDAwMDAgbiAKMDAwMDAwMTAwIDAwMDAwIG4gCnRyYWlsZXIKPDwvUm9vdCAxIDAgUiAvU2l6ZSA0ID4+CnN0YXJ0eHJlZgoxNDc KJSVFT0Y=",
             id: "612323"
         }
     ];
