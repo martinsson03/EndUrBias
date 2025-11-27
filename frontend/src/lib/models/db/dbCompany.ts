@@ -5,6 +5,5 @@ import IdentifiableObject from "../shared/identifiableObject";
 export default interface Company extends IdentifiableObject {
     Name: string,        // Name of company.
     CompanyLogoId: id,   // Id of the logo associated with the company.
-    Description: string, // Text explaining what the company does etc.
-    Jobs: id[]           // A list of jobs that are out on the market by this company.
+    Description: string  // Text explaining what the company does etc.
 };
