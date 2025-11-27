@@ -44,7 +44,7 @@ CREATE TABLE Applications (
     dateSent TIMESTAMP NOT NULL,
     censuredCV TEXT,
     cv TEXT,
-    state TEXT CHECK (state IN ("Uncensured", "Viewed", "Censured")),
+    state TEXT CHECK (state IN ("Censured","Viewed","Uncensored", "Candidate")),
     FOREIGN KEY (userId) REFERENCES Users(id),
     FOREIGN KEY (jobId) REFERENCES JobPostings(id)
 );
