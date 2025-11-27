@@ -1,12 +1,25 @@
+"use client"
+
 import PaginatedContainer from "@/components/ui/paginatedContainer";
 import SearchBar from "./searchBarClient";
 import JobDetailsUser from "./jobDetailsUser";
 import JobViewModel from "@/lib/models/view/jobViewModel";
 import { GetAvaibleJobs } from "@/lib/client/services/jobService";
+import { useEffect, useState } from "react";
 
 // Contains the content on the user page.
-export default async function UserPageContent() {
-    const jobs: JobViewModel[] = await GetAvaibleJobs();
+export default function UserPageContent() {
+    const [jobs, setJobs] = useState<JobViewModel[]>([]);
+
+    useEffect(() => {
+        async function fetchJobs() {
+            const data = await GetAvaibleJobs();
+
+            setJobs(data);
+        }
+
+        fetchJobs();
+    }, []);
 
     return(
         <div className="flex flex-col gap-10">
