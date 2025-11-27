@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppLayout from "@/components/ui/appLayout";
 
-export default function UserLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
@@ -20,12 +16,11 @@ export default function UserLayout({
 
     if (idToken) {
       try {
-        // Decode JWT and extract role
         const decoded = JSON.parse(atob(idToken.split(".")[1]));
-        setRole(decoded.role); // Assuming the role is part of the decoded payload
+        setRole(decoded.role); // Set the role from the decoded token
       } catch (error) {
         console.error("Error decoding JWT:", error);
-        setRole(null); // In case decoding fails, set role to null
+        setRole(null); // In case of decoding failure
       }
     } else {
       console.error("id_token not found in cookies");
@@ -33,15 +28,12 @@ export default function UserLayout({
   }, []);
 
   useEffect(() => {
-  
-
     if (role && role !== "user") {
-      // Redirect to unauthorized page if role is not 'user'
-      router.push("/unauthorized");
+      router.push("/unauthorized"); // Redirect non-users to the unauthorized page
     }
   }, [role, router]);
 
-  if (!role) return <div>Loading...</div>; // Wait for role to be determined
+  if (role === null) return <div>Loading...</div>; // Don't render anything until the role is determined
 
-  return AppLayout({ children }); // If role is 'user', render the page
+  return <AppLayout>{children}</AppLayout>; // Only render the page if the role is 'user'
 }
