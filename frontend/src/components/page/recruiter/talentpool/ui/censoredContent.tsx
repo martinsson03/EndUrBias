@@ -14,7 +14,7 @@ type CensoredContentProps = {
 };
 
 export default function CensoredContent({ job }: CensoredContentProps) {
-    const [cv, setCv] = useState<CensoredCVViewModel | undefined>();
+    const [cv, setCv] = useState<CensoredCVViewModel | null>();
 
     useEffect(() => {
         async function loadCv() {

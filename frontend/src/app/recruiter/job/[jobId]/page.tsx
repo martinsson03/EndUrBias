@@ -14,9 +14,9 @@ type JobProps = {
 
 // The page showing the job details for a certain job, but as a recruiter.
 export default async function Job({ params }: JobProps) {
-    const job: JobViewModel | undefined = await GetJobById((await params).jobId);
+    const job: JobViewModel | null = await GetJobById((await params).jobId);
 
-    if (job === undefined) return NotFound();
+    if (!job) return NotFound();
     else return (
         <PageContentContainer className="flex flex-col gap-5 mt-5">
             <Breadcrumb>
