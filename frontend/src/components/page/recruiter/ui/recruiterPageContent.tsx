@@ -3,7 +3,7 @@ import { GetJobsCreatedByRecruiter } from "@/lib/client/services/jobService";
 import JobDetailsRecruiter from "./jobDetailsRecruiter";
 
 export default async function RecruiterPageContent() {
-    const jobs = await GetJobsCreatedByRecruiter("")
+    const jobs = await GetJobsCreatedByRecruiter("666");
 
     return (
         <div className="flex flex-col gap-10">
