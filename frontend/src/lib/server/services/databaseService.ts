@@ -6,9 +6,9 @@ import { Pool, PoolClient, QueryResult } from "pg";
 const pool: Pool = new Pool({
     user: process.env.POSTGRES_USER || "postgres",
     host: process.env.POSTGRES_HOST || "localhost",
-    database: process.env.POSTGRES_NAME || "postgres",
+    database: process.env.POSTGRES_DB || "postgres",
     password: process.env.POSTGRES_PASSWORD || "postgres",
-    port: process.env.POSTGRES_PORT ? Number(process.env.DB_PORT) : 5432
+    port: process.env.POSTGRES_PORT ? Number(process.env.POSTGRES_PORT) : 5432
 });
 
 // Verifies the connection to the postgres db server.
@@ -27,7 +27,7 @@ async function verifyConnection(): Promise<void> {
 console.log("DB config from environment variables: ", {
     user: process.env.POSTGRES_USER,
     host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_NAME,
+    database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT
 });
