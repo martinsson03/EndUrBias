@@ -6,7 +6,7 @@ import JobViewModel from "@/lib/models/view/jobViewModel";
 
 // Returns all avaibles jobs that exist on the market right now.
 export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
-    const response: Response = await fetch(`api/job/avaibleJobs`, {
+    const response: Response = await fetch(`/api/job/avaibleJobs`, {
         method: "GET"
     });
 
@@ -19,7 +19,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 
 // Returns all details of a job by an id.
 export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
-    const response: Response = await fetch(`api/job?jobId=${jobId}`, {
+    const response: Response = await fetch(`/api/job?jobId=${jobId}`, {
         method: "GET"
     });
 
@@ -32,7 +32,7 @@ export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
 
 // Get jobs created by the specific recruiter. User has to be a recruiter for this to return anything!
 export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewModel[]> {
-    const response: Response = await fetch(`api/job/recruiter?userId=${userId}`, {
+    const response: Response = await fetch(`/api/job/recruiter?userId=${userId}`, {
         method: "GET"
     });
 
