@@ -1,9 +1,23 @@
+"use client"
+
 import PaginatedContainer from "@/components/ui/paginatedContainer";
 import { GetJobsCreatedByRecruiter } from "@/lib/client/services/jobService";
 import JobDetailsRecruiter from "./jobDetailsRecruiter";
+import { useEffect, useState } from "react";
+import JobViewModel from "@/lib/models/view/jobViewModel";
 
-export default async function RecruiterPageContent() {
-    const jobs = await GetJobsCreatedByRecruiter("666");
+export default function RecruiterPageContent() {
+    const [jobs, setJobs] = useState<JobViewModel[]>([]);
+
+    useEffect(() => {
+        async function getJobs() {
+            const objects = await GetJobsCreatedByRecruiter("666");
+
+            setJobs(objects);
+        }
+
+        getJobs();
+    }, []);
 
     return (
         <div className="flex flex-col gap-10">
