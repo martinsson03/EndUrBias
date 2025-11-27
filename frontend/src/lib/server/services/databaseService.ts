@@ -1,18 +1,14 @@
 // The database service that will be used to make queries.
 
 import { Pool, PoolClient, QueryResult } from "pg";
-import dotenv from "dotenv";
-
-// Load environment variables.
-dotenv.config();
 
 // Define the pool of connections that can make request to the database.
 const pool: Pool = new Pool({
-    user: process.env.DB_USER ?? "",
-    host: process.env.DB_HOST ?? "",
-    database: process.env.DB_NAME ?? "",
-    password: process.env.DB_PASSWORD ?? "",
-    port: Number(process.env.DB_PORT) ?? 5000
+    user: process.env.POSTGRES_USER || "postgres",
+    host: process.env.POSTGRES_HOST || "localhost",
+    database: process.env.POSTGRES_NAME || "postgres",
+    password: process.env.POSTGRES_PASSWORD || "postgres",
+    port: process.env.POSTGRES_PORT ? Number(process.env.DB_PORT) : 5432
 });
 
 // Verifies the connection to the postgres db server.
@@ -26,6 +22,15 @@ async function verifyConnection(): Promise<void> {
         console.error('Error occurred while connecting to the database: ', error);
     }
 }
+
+// Log all the configurations before running!
+console.log("DB config from environment variables: ", {
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_NAME,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
+});
 
 await verifyConnection(); // Verify before continuing!
 
