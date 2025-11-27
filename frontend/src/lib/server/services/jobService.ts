@@ -14,7 +14,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 
     const todaysDateAsSqlDate: string = todaysDate.toISOString().split("T")[0];
 
-    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE dateOfTermination < ${todaysDateAsSqlDate}`);
+    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE dateOfTermination < '${todaysDateAsSqlDate}'`);
 
     if (!jobs) return [];
 
