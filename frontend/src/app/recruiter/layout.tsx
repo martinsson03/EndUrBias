@@ -2,9 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AppLayout from "@/components/ui/appLayout";
+import AppLayout from "@/components/layout/appLayout";
 
-export default function RecruiterLayout({ children }: { children: React.ReactNode }) {
+export default function RecruiterLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
