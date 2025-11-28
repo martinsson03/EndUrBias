@@ -41,19 +41,19 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 
 // Returns all details of a job by an id.
 export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
-    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE id = ${jobId}`);
+    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE id = '${jobId}'`);
 
     if (!jobs) return null;
 
     const job: Job = jobs[0];
 
-    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = ${job.CompanyId}`);
+    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${job.CompanyId}'`);
 
     if (!companies) return null;
 
     const company: Company = companies[0];
 
-    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE id = ${job.RecruiterId}`);
+    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE id = '${job.RecruiterId}'`);
 
     if (!recruiters) return null;
 
@@ -64,17 +64,17 @@ export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
 
 // Get jobs created by the specific recruiter. User has to be recruiter to return anything useful.
 export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewModel[]> {
-    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE userId = ${userId}`);
+    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE userId = '${userId}'`);
 
     if (!recruiters) return [];
 
     const recruiter: Recruiter = recruiters[0];
 
-    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE recruiterId = ${recruiter.id}`);
+    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE recruiterId = '${recruiter.id}'`);
 
     if (!jobs) return [];
 
-    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = ${recruiter.CompanyId}`);
+    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${recruiter.CompanyId}'`);
 
     if (!companies) return [];
 
