@@ -6,9 +6,11 @@ import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import CVViewModel from "@/lib/models/view/cvViewModel";
 import { EncodeB64 } from "@/lib/shared/base64";
 import { MakeSqlQuery } from "./databaseService";
+import { ApplicationState } from "@/lib/models/shared/applicationState";
+import { Application } from "@/lib/models/db/dbApplication";
 
 // Tries to format and submit an application to the database.
-export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id): Promise<boolean> {
+export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id, userId: id): Promise<boolean> {
     request.CV = EncodeB64(request.CV);
     
     const rawEndpoint: string | undefined = process.env.PYTHON_ADRESS;
@@ -29,7 +31,21 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
 
     // Insert application into database.
     await MakeSqlQuery(`
-        
+        INSERT INTO Applications (
+            userId,
+            jobId,
+            dateSent,
+            censuredCV,
+            cv,
+            state
+        ) VALUES (
+            '${userId}',
+            '${jobId}',
+            NOW(),
+            '${anonymizedCv}',
+            '${request.CV}',
+            '${ApplicationState.Censored}'
+        );
     `);
     
     return true;
@@ -37,25 +53,87 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
 
 // Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
 export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | null> {
-    throw new Error("Not implemented!");
+    const cvs: CensoredCVViewModel[] | null = await MakeSqlQuery<CensoredCVViewModel>(`SELECT * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Censored}'`);
+    
+    if (!cvs) return null;
+
+    const cv: CensoredCVViewModel = cvs[0];
+
+    if (!cv) return null;
+
+    return cv;
 }
 
 // Returns all uncensored applications from the specific job. Fetches them from the database.
 export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[]> {
-    throw new Error("Not implemented!");
+    const cvs: CVViewModel[] | null = await MakeSqlQuery<CVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Uncensored}'`);
+
+    if (!cvs) return [];
+
+    return cvs;
 }
 
 // Returns all censored applications from the specific job that the recruiter has looked at already. Fetches them from the database.
 export async function GetCensoredLookedAtApplications(jobId: id): Promise<CensoredCVViewModel[]> {
-    throw new Error("Not implemented!");
+    const cvs: CensoredCVViewModel[] | null = await MakeSqlQuery<CensoredCVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Viewed}'`);
+
+    if (!cvs) return [];
+
+    return cvs;
 }
 
 // Returns all applications that are considered a candidate.
 export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
-    throw new Error("Not implemented!");
+    const cvs: CVViewModel[] | null = await MakeSqlQuery<CVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Candidate}'`);
+
+    if (!cvs) return [];
+
+    return cvs;
 }
 
 // Changes the application to the 4 different states depending on the current state and the requestRealCV parameter. Returns true if it worked.
 export async function ChangeApplicationState(requestRealCV: boolean, applicationId: id): Promise<boolean> {
-    throw new Error("Not implemented!");
+    const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT * FROM Applications WHERE id='${applicationId}'`);
+
+    if (!applications) return false;
+
+    const application: Application = applications[0];
+
+    if (!application) return false;
+
+    let newState: ApplicationState = ApplicationState.Censored;
+
+    if (application.State === ApplicationState.Censored && requestRealCV) {
+        newState = ApplicationState.Uncensored;
+    }
+    else if (application.State === ApplicationState.Censored && !requestRealCV) {
+        newState = ApplicationState.Viewed;
+    }
+    else if (application.State === ApplicationState.Viewed) {
+        newState = ApplicationState.Uncensored;
+    }
+    else if (application.State === ApplicationState.Uncensored) {
+        newState = ApplicationState.Candidate;
+    }
+    else if (application.State === ApplicationState.Candidate) {
+        newState = ApplicationState.Uncensored;
+    }
+
+    await MakeSqlQuery(`
+        UPDATE Applications
+        SET state = '${newState}'
+        WHERE id = '${applicationId}';
+    `);
+
+    const apps: Application[] | null = await MakeSqlQuery<Application>(`SELECT * FROM Applications WHERE id = '${applicationId}'`);
+
+    if (!apps) return false;
+
+    const app: Application | null = apps[0];
+
+    if (!app) return false;
+
+    if (app.State !== newState) return false;
+
+    return true;
 }
