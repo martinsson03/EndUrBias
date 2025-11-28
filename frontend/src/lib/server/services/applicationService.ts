@@ -4,10 +4,35 @@ import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitReq
 import type { id } from "@/lib/models/shared/id";
 import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import CVViewModel from "@/lib/models/view/cvViewModel";
+import { EncodeB64 } from "@/lib/shared/base64";
+import { MakeSqlQuery } from "./databaseService";
 
 // Tries to format and submit an application to the database.
 export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id): Promise<boolean> {
-    throw new Error("Not implemented!");
+    request.CV = EncodeB64(request.CV);
+    
+    const rawEndpoint: string | undefined = process.env.PYTHON_ADRESS;
+    const rawPort: string | undefined = process.env.PYTHON_PORT;
+
+    const endpoint: string = rawEndpoint === undefined ? "" : rawEndpoint;
+    const port: string     = rawPort === undefined ? "" : rawPort;
+
+    const response: Response = await fetch(`http://${endpoint}:${port}/anonymize`, {
+        method: "POST",
+        headers: { "Content-Type": "json" },
+        body: JSON.stringify({ cvBase64: request.CV })
+    });
+
+    const anonymizedCv: { cvBase64: string } = await response.json();
+
+    if (typeof anonymizedCv !== "string") return false;
+
+    // Insert application into database.
+    await MakeSqlQuery(`
+        
+    `);
+    
+    return true;
 }
 
 // Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
