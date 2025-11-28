@@ -70,6 +70,8 @@ export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewMode
 
     const recruiter: Recruiter = recruiters[0];
 
+    if (!recruiter) return [];
+
     const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE recruiterId = '${recruiter.id}'`);
 
     if (!jobs) return [];
@@ -79,6 +81,8 @@ export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewMode
     if (!companies) return [];
 
     const company: Company = companies[0];
+
+    if (!company) return [];
 
     return jobs.flatMap(job => createViewModel(job, company, recruiter));
 }
