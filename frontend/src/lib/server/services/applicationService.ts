@@ -53,40 +53,51 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
 
 // Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
 export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | null> {
-    const cvs: CensoredCVViewModel[] | null = await MakeSqlQuery<CensoredCVViewModel>(`SELECT * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Censored}'`);
+    const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Censored}'`);
     
-    if (!cvs) return null;
+    if (!applications) return null;
 
-    const cv: CensoredCVViewModel = cvs[0];
+    const application: Application = applications[0];
 
-    if (!cv) return null;
+    if (!application) return null;
+
+    const cv: CensoredCVViewModel = {
+        CensoredCV: application.censoredcv,
+        id: application.id
+    };
 
     return cv;
 }
 
 // Returns all uncensored applications from the specific job. Fetches them from the database.
 export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[]> {
-    const cvs: CVViewModel[] | null = await MakeSqlQuery<CVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Uncensored}'`);
+    const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Uncensored}'`);
 
-    if (!cvs) return [];
+    if (!applications) return [];
+
+    const cvs: CVViewModel[] = applications.map((app: Application): CVViewModel => { return { CV: app.cv, id: app.id } });
 
     return cvs;
 }
 
 // Returns all censored applications from the specific job that the recruiter has looked at already. Fetches them from the database.
 export async function GetCensoredLookedAtApplications(jobId: id): Promise<CensoredCVViewModel[]> {
-    const cvs: CensoredCVViewModel[] | null = await MakeSqlQuery<CensoredCVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Viewed}'`);
+    const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Viewed}'`);
 
-    if (!cvs) return [];
-
+    if (!applications) return [];
+    
+    const cvs: CensoredCVViewModel[] = applications.map((app: Application): CensoredCVViewModel => { return { CensoredCV: app.censoredcv, id: app.id } });
+    
     return cvs;
 }
 
 // Returns all applications that are considered a candidate.
 export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
-    const cvs: CVViewModel[] | null = await MakeSqlQuery<CVViewModel>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Candidate}'`);
+    const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Candidate}'`);
 
-    if (!cvs) return [];
+    if (!applications) return [];
+
+    const cvs: CVViewModel[] = applications.map((app: Application): CVViewModel => { return { CV: app.cv, id: app.id } });
 
     return cvs;
 }
@@ -103,19 +114,19 @@ export async function ChangeApplicationState(requestRealCV: boolean, application
 
     let newState: ApplicationState = ApplicationState.Censored;
 
-    if (application.State === ApplicationState.Censored && requestRealCV) {
+    if (application.state === ApplicationState.Censored && requestRealCV) {
         newState = ApplicationState.Uncensored;
     }
-    else if (application.State === ApplicationState.Censored && !requestRealCV) {
+    else if (application.state === ApplicationState.Censored && !requestRealCV) {
         newState = ApplicationState.Viewed;
     }
-    else if (application.State === ApplicationState.Viewed) {
+    else if (application.state === ApplicationState.Viewed) {
         newState = ApplicationState.Uncensored;
     }
-    else if (application.State === ApplicationState.Uncensored) {
+    else if (application.state === ApplicationState.Uncensored) {
         newState = ApplicationState.Candidate;
     }
-    else if (application.State === ApplicationState.Candidate) {
+    else if (application.state === ApplicationState.Candidate) {
         newState = ApplicationState.Uncensored;
     }
 
@@ -133,7 +144,7 @@ export async function ChangeApplicationState(requestRealCV: boolean, application
 
     if (!app) return false;
 
-    if (app.State !== newState) return false;
+    if (app.state !== newState) return false;
 
     return true;
 }

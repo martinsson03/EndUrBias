@@ -14,7 +14,7 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
 
     const todaysDateAsSqlDate: string = todaysDate.toISOString().split("T")[0];
 
-    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE dateOfTermination < '${todaysDateAsSqlDate}'`);
+    const jobs: Job[] | null = await MakeSqlQuery<Job>(`SELECT * FROM JobPostings WHERE dateOfTermination > '${todaysDateAsSqlDate}'`);
 
     if (!jobs) return [];
 
@@ -27,13 +27,13 @@ export async function GetAvaibleJobs(): Promise<JobViewModel[]> {
     if (!recruiters) return [];
 
     const viewModels: JobViewModel[] = (jobs ?? []).flatMap(job => {
-        const jobCompany: Company | null = companies?.find(company => company.id === job.CompanyId) ?? null;
+        const jobCompany: Company | null = companies?.find(company => company.id === job.companyid) ?? null;
     
-        const jobRecruiter: Recruiter | null = recruiters?.find(recruiter => recruiter.id === job.RecruiterId) ?? null;
+        const jobRecruiter: Recruiter | null = recruiters?.find(recruiter => recruiter.id === job.recruiterid) ?? null;
     
         if (!jobCompany || !jobRecruiter) return [];
 
-        return [createViewModel(job, jobCompany, jobRecruiter)]
+        return [createViewModel(job, jobCompany, jobRecruiter)];
     }).filter(viewModel => viewModel !== null);
 
     return viewModels;
@@ -47,13 +47,13 @@ export async function GetJobById(jobId: id): Promise<JobViewModel | null> {
 
     const job: Job = jobs[0];
 
-    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${job.CompanyId}'`);
+    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${job.companyid}'`);
 
     if (!companies) return null;
 
     const company: Company = companies[0];
 
-    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE id = '${job.RecruiterId}'`);
+    const recruiters: Recruiter[] | null = await MakeSqlQuery<Recruiter>(`SELECT * FROM Recruiters WHERE id = '${job.recruiterid}'`);
 
     if (!recruiters) return null;
 
@@ -76,7 +76,7 @@ export async function GetJobsCreatedByRecruiter(userId: id): Promise<JobViewMode
 
     if (!jobs) return [];
 
-    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${recruiter.CompanyId}'`);
+    const companies: Company[] | null = await MakeSqlQuery<Company>(`SELECT * FROM Companies WHERE id = '${recruiter.companyid}'`);
 
     if (!companies) return [];
 
@@ -103,16 +103,16 @@ export async function RemoveExistingJob(jobId: id): Promise<boolean> {
 }
 
 // Creates a view model using the parameters given.
-function createViewModel(job: Job, company: Company, recruiter: Recruiter): JobViewModel {
+function createViewModel(job: Job, company: Company, recruiter: Recruiter): JobViewModel {    
     return {
-        DateOfTermination: job.DateOfTermination,
-        Title: job.Title,
-        Company: company.Name,
+        DateOfTermination: job.dateoftermination,
+        Title: job.title,
+        Company: company.name,
         CompanyId: company.id,
-        Location: job.Location,
-        Extent: job.Extent,
-        Description: job.Description,
-        Tags: job.Tags.split(","),
+        Location: job.location,
+        Extent: job.extent,
+        Description: job.description,
+        Tags: job.tags.split(","),
         id: job.id
     };
 };

@@ -51,7 +51,7 @@ export default function UncensoredContent({ job }: UncensoredContentProps) {
 
     return (
         <PaginatedContainer columns={5}>
-            { applications && applications.map((app, i) => (
+            { applications && applications.length > 0 && applications.map((app, i) => (
                 <Card key={i} className="hover:cursor-pointer p-2" onClick={() => openDialog("", "", cvDialog(app))}>
                     <p className="text-center">{ app.id }</p>
                 </Card>

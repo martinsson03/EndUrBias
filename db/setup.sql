@@ -19,16 +19,16 @@ CREATE TABLE Users (
 
 CREATE TABLE Recruiters (
     id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-    userId CHAR(12) NOT NULL,
-    companyId CHAR(8) NOT NULL,
+    userId CHAR(36) NOT NULL,
+    companyId CHAR(36) NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(id),
     FOREIGN KEY (companyId) REFERENCES Companies(id)
 );
 
 CREATE TABLE JobPostings (
     id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-    companyId CHAR(8) NOT NULL,
-    recruiterId CHAR(8) NOT NULL,
+    companyId CHAR(36) NOT NULL,
+    recruiterId CHAR(36) NOT NULL,
     dateOfTermination TIMESTAMP NOT NULL,
     title TEXT NOT NULL,
     location TEXT NOT NULL,
@@ -41,8 +41,8 @@ CREATE TABLE JobPostings (
 
 CREATE TABLE Applications (
     id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
-    userId CHAR(12) NOT NULL,
-    jobId CHAR(10) NOT NULL,
+    userId CHAR(36) NOT NULL,
+    jobId CHAR(36) NOT NULL,
     dateSent TIMESTAMP NOT NULL,
     censuredCV TEXT NOT NULL,
     cv TEXT NOT NULL,
@@ -56,17 +56,21 @@ INSERT INTO Companies (logoId, name, description) VALUES
 ('logo2', 'HealthPlus', 'Committed to providing quality healthcare services worldwide.'),
 ('logo3', 'EcoBuild', 'Pioneers in sustainable construction and green building practices.');
 
+INSERT INTO Companies (id, logoId, name, description) VALUES
+('666', 'alibaba#image', 'LW Digital AB', 'Super solution!');
+
 INSERT INTO Users (firstName, lastName, gender, email, phone, role) VALUES
 ('Alice', 'Smith', 'Female', 'alice.smith@example.com', '1234567890', 'User'),
-('Bob', 'Johnson', 'Male ', 'bob.johnson@example.com', '0987654321', 'Recruiter');
+('Bob', 'Johnson', 'Male ', 'bob.johnson@example.com', '0987654321', 'Recruiter'),
 ('Carol', 'Davis', 'Female', 'carol.davis@example.com', '1122334455', 'User');
 
 INSERT INTO Users (id,firstName, lastName, gender, email, phone, role) VALUES
-('666','David', 'Wilson', 'Male', 'david.wilson@example.com', '2233445566', 'User');
+('666','David', 'Wilson', 'Male', 'david.wilson@example.com', '2233445566', 'Recruiter');
 
 INSERT INTO Recruiters (userId, companyId) VALUES
-((SELECT id FROM Users WHERE firstName='David' AND lastName='Wilson'), (SELECT id FROM Companies WHERE name='TechCorp'));
+((SELECT id FROM Users WHERE firstName='David' AND lastName='Wilson'), (SELECT id FROM Companies WHERE name='LW Digital AB')),
+((SELECT id FROM Users WHERE firstName='Bob' AND lastName='Johnson'), (SELECT id FROM Companies WHERE name='HealthPlus'));
 
 INSERT INTO JobPostings (companyId, recruiterId, dateOfTermination, title, location, extent, description, tags) VALUES
-((SELECT id FROM Companies WHERE name='TechCorp'), (SELECT id FROM Recruiters WHERE userId=(SELECT id FROM Users WHERE firstName='David' AND lastName='Wilson')), '2026-12-31', 'Software Engineer', 'New York, NY', 'Full-time', 'Develop and maintain software applications.', 'software,engineering,full-time'),
+((SELECT id FROM Companies WHERE name='LW Digital AB'), (SELECT id FROM Recruiters WHERE userId=(SELECT id FROM Users WHERE firstName='David' AND lastName='Wilson')), '2026-12-31', 'Software Engineer', 'New York, NY', 'Full-time', 'Develop and maintain software applications.', 'software,engineering,full-time'),
 ((SELECT id FROM Companies WHERE name='HealthPlus'), (SELECT id FROM Recruiters WHERE userId=(SELECT id FROM Users WHERE firstName='Bob' AND lastName='Johnson')), '2026-11-30', 'Nurse Practitioner', 'Los Angeles, CA', 'Part-time', 'Provide healthcare services to patients.', 'healthcare,nursing,part-time');
