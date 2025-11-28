@@ -5,13 +5,18 @@ import { NativeSelect, NativeSelectOption } from "@/components/shadcn/ui/nativeS
 import { FormEvent, useState } from "react";
 import { CvDropzone } from "./cvDropzoneClient";
 import { Button } from "@/components/shadcn/ui/button";
+import { SubmitApplication } from "@/lib/client/services/applicationService";
+import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
+import { id } from "@/lib/models/shared/id";
 
 type ApplyJobClientProps = {
-    id?: string
+    id?: string,
+    jobId: id,
+    userId: id
 };
 
 // The form that the user will submit to the job note.
-export default function ApplyJobClient({ id }: ApplyJobClientProps) {
+export default function ApplyJobClient({ id, jobId, userId }: ApplyJobClientProps) {
     // Set all the form inputs:
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname]   = useState("");
@@ -21,10 +26,19 @@ export default function ApplyJobClient({ id }: ApplyJobClientProps) {
     const [cv, setCv]               = useState<File | null>(null);
 
     // When you have submitted the form, this will run.
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault(); // Prevent the framework from taking further actions.
 
         // Handle the inputs!
+        const request: ApplicationSubmitRequest = {
+            CV: await cv?.text() ?? "",
+            Firstname: firstname,
+            Lastname: lastname,
+            Phonenumber: phone,
+            Mail: email
+        };
+
+        const success = await SubmitApplication(request, jobId, userId);
     }
     
     return (
