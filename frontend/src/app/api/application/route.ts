@@ -2,7 +2,7 @@ import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitReq
 import { id } from "@/lib/models/shared/id";
 import { ChangeApplicationState, SubmitApplication } from "@/lib/server/services/applicationService";
 
-// POST: /api/application?jobId=<value> | Submit an application for a job with specific id.
+// POST: /api/application?jobId=<value>&userId=<value> | Submit an application for a job with specific id.
 export async function POST(request: Request): Promise<Response> {
     const url = new URL(request.url);
 
@@ -11,6 +11,12 @@ export async function POST(request: Request): Promise<Response> {
     if (!rawJobId) return new Response("Invalid request, missing jobId!", { status: 400 });
 
     const jobId: id = rawJobId;
+
+    const rawUserId = url.searchParams.get("userId");
+
+    if (!rawUserId) return new Response("Invalid request, missing userId!", { status: 400 });
+
+    const userId: id = rawJobId;
 
     const submission: ApplicationSubmitRequest = await request.json();
 
@@ -22,7 +28,7 @@ export async function POST(request: Request): Promise<Response> {
         typeof submission?.Mail        !== "string"
     ) return new Response("Invalid request body for submission!", { status: 400 });
 
-    const success: boolean = await SubmitApplication(submission, jobId);
+    const success: boolean = await SubmitApplication(submission, jobId, userId);
 
     return Response.json(success);
 }
