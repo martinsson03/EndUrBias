@@ -1,22 +1,24 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE Companies (
-    id CHAR(8) PRIMARY KEY,
-    logoId CHAR(8),
-    name TEXT,
-    description TEXT
+    id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+    logoId CHAR(36) NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL
 );
 
 CREATE TABLE Users (
-    id CHAR(12) PRIMARY KEY,
-    firstName TEXT,
-    lastName TEXT,
-    gender CHAR(1) CHECK (gender IN ('M','F')),
-    email TEXT,
-    phone CHAR(10),
-    role TEXT CHECK (role IN ('recruiter','candidate','other'))
+    id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    gender CHAR(10) NOT NULL CHECK (gender IN ('Male', 'Female')),
+    email TEXT NOT NULL,
+    phone CHAR(10) NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('Recruiter', 'User'))
 );
 
 CREATE TABLE Recruiters (
-    id CHAR(8) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
     userId CHAR(12) NOT NULL,
     companyId CHAR(8) NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(id),
@@ -24,36 +26,27 @@ CREATE TABLE Recruiters (
 );
 
 CREATE TABLE JobPostings (
-    id CHAR(10) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
     companyId CHAR(8) NOT NULL,
     recruiterId CHAR(8) NOT NULL,
     dateOfTermination TIMESTAMP NOT NULL,
-    title TEXT,
-    location TEXT,
-    extent CHAR(3) DEFAULT '100',
-    description TEXT,
-    tags TEXT,
+    title TEXT NOT NULL,
+    location TEXT NOT NULL,
+    extent TEXT NOT NULL,
+    description TEXT NOT NULL,
+    tags TEXT NOT NULL,
     FOREIGN KEY (companyId) REFERENCES Companies(id),
     FOREIGN KEY (recruiterId) REFERENCES Recruiters(id)
 );
 
 CREATE TABLE Applications (
-    id CHAR(12) PRIMARY KEY,
+    id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
     userId CHAR(12) NOT NULL,
     jobId CHAR(10) NOT NULL,
     dateSent TIMESTAMP NOT NULL,
-    censuredCV TEXT,
-    cv TEXT,
-    state TEXT CHECK (state IN ("Censured","Viewed","Uncensored", "Candidate")),
+    censuredCV TEXT NOT NULL,
+    cv TEXT NOT NULL,
+    state TEXT NOT NULL CHECK (state IN ("Censured", "Viewed", "Uncensored", "Candidate")),
     FOREIGN KEY (userId) REFERENCES Users(id),
     FOREIGN KEY (jobId) REFERENCES JobPostings(id)
 );
-
-
-CREATE OR REPLACE VIEW Jobdetails AS
-SELECT jp.dateOfTermination, jp.title, jp.location, jp.extent, jp.description, jp.tags
-FROM JobPostings;
-
-CREATE OR REPLACE VIEW JobviewModel AS
-SELECT * 
-FROM Jobdetails;
