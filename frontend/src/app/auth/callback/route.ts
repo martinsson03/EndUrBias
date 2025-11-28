@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Exchange the authorization code for tokens
-  const tokenResponse = await fetch("http://localhost:4000/api/oauth/token", {
+  const tokenResponse = await fetch("http://authserver:8002/api/oauth/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       grant_type: "authorization_code",
       code,
       client_id: "eyb-frontend",
-      redirect_uri: "http://localhost:3000/auth/callback",
+      redirect_uri: "http://localhost:8000/auth/callback",
     }).toString(),
   });
 

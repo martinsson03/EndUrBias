@@ -67,7 +67,7 @@ You should see the End Your Bias landing page.
 
 Open the following URL in the browser:
 
-http://localhost:4000/login?client_id=eyb-frontend&redirect_uri=http://localhost:3000/auth/callback
+http://localhost:8002/login?client_id=eyb-frontend&redirect_uri=http://localhost:8000/auth/callback
 
 You should see the EYB Auth Server login page.
 

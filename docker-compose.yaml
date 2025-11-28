@@ -13,7 +13,17 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "${NODE_PORT}:4000"
+      - "${NODE_PORT}:8000"
+    env_file:
+      - ./.env
+
+
+  authserver:
+    build:
+      context: ./authserver
+      dockerfile: Dockerfile
+    ports:
+      - "${AUTH_PORT}:8002"
     env_file:
       - ./.env
 

@@ -69,7 +69,10 @@ const clients: Client[] = [
     id: "eyb-frontend",
     name: "End Your Bias Frontend",
     secret: "super-secret", // placeholder, useful if I add client authentication
-    redirectUris: ["http://localhost:3000/auth/callback"],
+    redirectUris: ["http://localhost:8000/auth/callback"],
+      
+    //  "http://localhost:3000/auth/callback"
+    
   },
 ];
 
@@ -117,7 +120,7 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.AUTH_JWT_SECRET || "dev-secret-change-me"
 );
 
-const ISSUER = "http://localhost:4000";
+const ISSUER = "http://localhost:8002";
 
 export async function createAccessToken(
   user: User,

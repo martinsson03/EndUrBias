@@ -1,12 +1,12 @@
 FROM node:20-alpine
 
-WORKDIR /frontend
+WORKDIR /authserver
 
 COPY . .
 
 RUN npm install
 
-ENV PORT=8000
-EXPOSE 8000
+ENV PORT=8002
+EXPOSE 8002
 
 CMD ["npm", "run", "dev"]
