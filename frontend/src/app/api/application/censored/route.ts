@@ -1,5 +1,5 @@
+import CensoredCvBase64 from "@/lib/models/shared/censoredCv";
 import { id } from "@/lib/models/shared/id";
-import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import { GetCensoredApplication } from "@/lib/server/services/applicationService";
 
 // GET: /api/application/censored?jobId=<value> | Gets a censored application for a specific job.
@@ -12,7 +12,7 @@ export async function GET(request: Request): Promise<Response> {
 
     const jobId: id = rawJobId;
 
-    const cv: CensoredCVViewModel | null = await GetCensoredApplication(jobId);
+    const cv: CensoredCvBase64 | null = await GetCensoredApplication(jobId);
 
     return Response.json(cv);
 }

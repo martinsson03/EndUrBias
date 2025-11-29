@@ -1,12 +1,17 @@
 // User functions, on the client, that is related to applications.
 
 import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
+import CensoredCvBase64 from "@/lib/models/shared/censoredCv";
+import CvBase64 from "@/lib/models/shared/cv";
 import type { id } from "@/lib/models/shared/id";
 import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import CVViewModel from "@/lib/models/view/cvViewModel";
+import { DecodeB64ToString, DecodeB64ToUint8Array, EncodeB64 } from "@/lib/shared/base64";
 
 // Tries to submit an application and returns true if it was possible. Called by the user.
 export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id, userId: id): Promise<boolean> {
+    request.CV = EncodeB64(request.CV);
+
     const response: Response = await fetch(`/api/application?jobId=${jobId}&userId=${userId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -26,14 +31,14 @@ export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewM
         method: "GET"
     });
 
-    const censoredCv: CensoredCVViewModel | null = await response.json();
+    const censoredCv: CensoredCvBase64 | null = await response.json();
 
     if (
         typeof censoredCv?.CensoredCV !== "string" ||
         typeof censoredCv?.id         !== "string"
     ) return null;
 
-    return censoredCv;
+    return { id: censoredCv.id, CensoredCV: DecodeB64ToString(censoredCv.CensoredCV) };
 }
 
 // Returns all uncensored applications from the specific job if the user is a recruiter.
@@ -42,11 +47,15 @@ export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[
         method: "GET"
     });
 
-    const uncensoredCvs: CVViewModel[] = await response.json();
+    const uncensoredCvs: CvBase64[] = await response.json();
 
     if (typeof uncensoredCvs === undefined) return [];
 
-    return uncensoredCvs;
+    return uncensoredCvs.map(cv => (
+        { 
+            id: cv.id, 
+            CV: DecodeB64ToUint8Array(cv.CV) 
+        }));
 }
 
 // Returns all censored applications from the specific job that the recruiter has looked at already. If the user is a recruiter.
@@ -55,30 +64,38 @@ export async function GetCensoredLookedAtApplications(jobId: id): Promise<Censor
         method: "GET"
     });
 
-    const uncensoredCv: CensoredCVViewModel[] = await response.json();
+    const censoredCvs: CensoredCvBase64[] = await response.json();
 
-    if (typeof uncensoredCv === undefined) return [];
+    if (typeof censoredCvs === undefined) return [];
 
-    return uncensoredCv;
+    return censoredCvs.map(cv => (
+        { 
+            id: cv.id, 
+            CensoredCV: DecodeB64ToString(cv.CensoredCV) 
+        }));
 }
 
 // Returns all applications that are considered a candidate.
 export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
-    const response: Response = await fetch(`/api/application/viewed?jobId=${jobId}`, {
+    const response: Response = await fetch(`/api/application/candidate?jobId=${jobId}`, {
         method: "GET"
     });
 
-    const candidateCvs: CVViewModel[] = await response.json();
+    const candidateCvs: CvBase64[] = await response.json();
 
     if (typeof candidateCvs === undefined) return [];
 
-    return candidateCvs;
+    return candidateCvs.map(cv => (
+        { 
+            id: cv.id, 
+            CV: DecodeB64ToUint8Array(cv.CV) 
+        }));
 }
 
 // Changes the application to the 4 different states depending on the current state and the requestRealCV parameter. Returns true if it worked.
 export async function ChangeApplicationState(requestRealCV: boolean, applicationId: id): Promise<boolean> {
-    const response: Response = await fetch(`/api/application?requestRealCV=${requestRealCV}&applicationId=${applicationId}`, {
-        method: "GET"
+    const response: Response = await fetch(`/api/application?requestRealCv=${requestRealCV}&applicationId=${applicationId}`, {
+        method: "PUT"
     });
 
     const success: boolean = await response.json();
