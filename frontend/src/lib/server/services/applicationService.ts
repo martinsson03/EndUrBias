@@ -4,30 +4,19 @@ import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitReq
 import type { id } from "@/lib/models/shared/id";
 import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import CVViewModel from "@/lib/models/view/cvViewModel";
-import { EncodeB64 } from "@/lib/shared/base64";
 import { MakeSqlQuery } from "./databaseService";
 import { ApplicationState } from "@/lib/models/shared/applicationState";
 import { Application } from "@/lib/models/db/dbApplication";
+import { CensorCV } from "./censorService";
+import AnonymizeResponse from "@/lib/models/responses/anonymizeResponse";
+import CvBase64 from "@/lib/models/shared/cv";
+import CensoredCvBase64 from "@/lib/models/shared/censoredCv";
 
 // Tries to format and submit an application to the database.
 export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id, userId: id): Promise<boolean> {
-    request.CV = EncodeB64(request.CV);
-    
-    const rawEndpoint: string | undefined = process.env.PYTHON_ADRESS;
-    const rawPort: string | undefined = process.env.PYTHON_PORT;
+    const anonymizedCv: AnonymizeResponse = await CensorCV(request);
 
-    const endpoint: string = rawEndpoint === undefined ? "" : rawEndpoint;
-    const port: string     = rawPort === undefined ? "" : rawPort;
-
-    const response: Response = await fetch(`http://${endpoint}:${port}/anonymize`, {
-        method: "POST",
-        headers: { "Content-Type": "json" },
-        body: JSON.stringify({ cvBase64: request.CV })
-    });
-
-    const anonymizedCv: { cvBase64: string } = await response.json();
-
-    if (typeof anonymizedCv !== "string") return false;
+    if (!anonymizedCv || typeof anonymizedCv.cvBase64 !== "string") return false;
 
     // Insert application into database.
     await MakeSqlQuery(`
@@ -35,14 +24,14 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
             userId,
             jobId,
             dateSent,
-            censuredCV,
+            censoredCv,
             cv,
             state
         ) VALUES (
             '${userId}',
             '${jobId}',
             NOW(),
-            '${anonymizedCv}',
+            '${anonymizedCv.cvBase64}',
             '${request.CV}',
             '${ApplicationState.Censored}'
         );
@@ -52,7 +41,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
 }
 
 // Returns a censored cv from the specific job, if null, no cv exist. Fetches it from the database.
-export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewModel | null> {
+export async function GetCensoredApplication(jobId: id): Promise<CensoredCvBase64 | null> {
     const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Censored}'`);
     
     if (!applications) return null;
@@ -61,7 +50,7 @@ export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewM
 
     if (!application) return null;
 
-    const cv: CensoredCVViewModel = {
+    const cv: CensoredCvBase64 = {
         CensoredCV: application.censoredcv,
         id: application.id
     };
@@ -70,34 +59,34 @@ export async function GetCensoredApplication(jobId: id): Promise<CensoredCVViewM
 }
 
 // Returns all uncensored applications from the specific job. Fetches them from the database.
-export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[]> {
+export async function GetUncensoredApplications(jobId: id): Promise<CvBase64[]> {
     const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Uncensored}'`);
 
     if (!applications) return [];
 
-    const cvs: CVViewModel[] = applications.map((app: Application): CVViewModel => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
 
     return cvs;
 }
 
 // Returns all censored applications from the specific job that the recruiter has looked at already. Fetches them from the database.
-export async function GetCensoredLookedAtApplications(jobId: id): Promise<CensoredCVViewModel[]> {
+export async function GetCensoredLookedAtApplications(jobId: id): Promise<CensoredCvBase64[]> {
     const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Viewed}'`);
 
     if (!applications) return [];
     
-    const cvs: CensoredCVViewModel[] = applications.map((app: Application): CensoredCVViewModel => { return { CensoredCV: app.censoredcv, id: app.id } });
+    const cvs: CensoredCvBase64[] = applications.map((app: Application): CensoredCvBase64 => { return { CensoredCV: app.censoredcv, id: app.id } });
     
     return cvs;
 }
 
 // Returns all applications that are considered a candidate.
-export async function GetCandidateApplications(jobId: id): Promise<CVViewModel[]> {
+export async function GetCandidateApplications(jobId: id): Promise<CvBase64[]> {
     const applications: Application[] | null = await MakeSqlQuery<Application>(`SELECT  * FROM Applications WHERE jobId='${jobId}' AND state='${ApplicationState.Candidate}'`);
 
     if (!applications) return [];
 
-    const cvs: CVViewModel[] = applications.map((app: Application): CVViewModel => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
 
     return cvs;
 }

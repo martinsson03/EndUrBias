@@ -20,7 +20,7 @@ export default function JobPageContent({ job }: JobPageContentProps) {
 
             <SeperatorHorizontal></SeperatorHorizontal>
             
-            <ApplyJobClient id="apply" jobId={job.id} userId="666"></ApplyJobClient>
+            <ApplyJobClient id="apply" jobId={job.id} userId="666666666666666666666666666666666666"></ApplyJobClient>
         </div>
     );
 }

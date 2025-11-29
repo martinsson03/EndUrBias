@@ -1,5 +1,5 @@
+import CvBase64 from "@/lib/models/shared/cv";
 import { id } from "@/lib/models/shared/id";
-import CVViewModel from "@/lib/models/view/cvViewModel";
 import { GetUncensoredApplications } from "@/lib/server/services/applicationService";
 
 // GET: /api/application/uncensored?jobId=<value> | Gets all uncensored applications for a specific job.
@@ -12,7 +12,7 @@ export async function GET(request: Request): Promise<Response> {
 
     const jobId: id = rawJobId;
 
-    const cv: CVViewModel[] = await GetUncensoredApplications(jobId);
+    const cv: CvBase64[] = await GetUncensoredApplications(jobId);
 
     return Response.json(cv);
 }
