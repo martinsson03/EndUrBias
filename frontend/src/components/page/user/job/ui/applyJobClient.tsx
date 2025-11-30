@@ -8,6 +8,7 @@ import { Button } from "@/components/shadcn/ui/button";
 import { SubmitApplication } from "@/lib/client/services/applicationService";
 import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
 import { id } from "@/lib/models/shared/id";
+import { EncodeB64FromUint8Array } from "@/lib/shared/base64";
 
 type ApplyJobClientProps = {
     id?: string,
@@ -29,9 +30,13 @@ export default function ApplyJobClient({ id, jobId, userId }: ApplyJobClientProp
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault(); // Prevent the framework from taking further actions.
 
+        let cvB64: string = "";
+
+        if (cv) cvB64 = EncodeB64FromUint8Array(new Uint8Array(await cv.arrayBuffer()));
+
         // Handle the inputs!
         const request: ApplicationSubmitRequest = {
-            CV: await cv?.text() ?? "",
+            CV: cvB64,
             Firstname: firstname,
             Lastname: lastname,
             Phonenumber: phone,

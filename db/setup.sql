@@ -76,5 +76,3 @@ INSERT INTO JobPostings (id, companyId, recruiterId, dateOfTermination, title, l
 
 INSERT INTO JobPostings (companyId, recruiterId, dateOfTermination, title, location, extent, description, tags) VALUES
 ((SELECT id FROM Companies WHERE name='HealthPlus'), (SELECT id FROM Recruiters WHERE userId=(SELECT id FROM Users WHERE firstName='Bob' AND lastName='Johnson')), '2026-11-30', 'Nurse Practitioner', 'Los Angeles, CA', 'Part-time', 'Provide healthcare services to patients.', 'healthcare,nursing,part-time');
-
-INSERT INTO Applications (userId, jobId, dateSent, censoredCv, cv, state) VALUES ('666666666666666666666666666666666666', '666666666666666666666666666666666666', NOW(), 'anonymized CV content here', 'original CV content here', 'Censored');

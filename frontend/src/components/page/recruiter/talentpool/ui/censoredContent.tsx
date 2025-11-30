@@ -28,7 +28,7 @@ export default function CensoredContent({ job }: CensoredContentProps) {
     return (
         <div>
             { cv && (            
-                <div className="flex flex-col gap-4 pt-4">
+                <div className="flex flex-col gap-4 pt-4 w-full">
                     <div className="flex justify-center items-center gap-3">
                         <h6 className="text-secondary-foreground">Identifier:</h6>
                         <Input disabled={true} className="w-100 text-center" value={cv.id}></Input>

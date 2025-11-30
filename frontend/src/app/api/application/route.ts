@@ -1,7 +1,6 @@
 import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
 import { id } from "@/lib/models/shared/id";
 import { ChangeApplicationState, SubmitApplication } from "@/lib/server/services/applicationService";
-import { EncodeB64 } from "@/lib/shared/base64";
 
 // POST: /api/application?jobId=<value>&userId=<value> | Submit an application for a job with specific id.
 export async function POST(request: Request): Promise<Response> {
@@ -28,8 +27,6 @@ export async function POST(request: Request): Promise<Response> {
         typeof submission?.Phonenumber !== "string" ||
         typeof submission?.Mail        !== "string"
     ) return new Response("Invalid request body for submission!", { status: 400 });
-
-    submission.CV = EncodeB64(submission.CV);
 
     const success: boolean = await SubmitApplication(submission, jobId, userId);
 
