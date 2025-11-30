@@ -43,7 +43,7 @@ export default function CensoredCheckedContent({ job }: CensoredCheckedContentPr
                 <CensoredCv cv={application.CensoredCV}></CensoredCv>
 
                 <div className="flex gap-2">
-                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); success && closeDialog(); }}>Request real CV</Button>
+                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); if(success) { setApplications(prev => prev ? prev.filter(a => a.id !== application.id) : null); closeDialog(); } }}>Request real CV</Button>
                 </div>
             </div>
         );
