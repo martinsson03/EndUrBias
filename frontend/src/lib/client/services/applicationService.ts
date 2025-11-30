@@ -6,12 +6,10 @@ import CvBase64 from "@/lib/models/shared/cv";
 import type { id } from "@/lib/models/shared/id";
 import CensoredCVViewModel from "@/lib/models/view/censoredCVViewModel";
 import CVViewModel from "@/lib/models/view/cvViewModel";
-import { DecodeB64ToString, DecodeB64ToUint8Array, EncodeB64 } from "@/lib/shared/base64";
+import { DecodeB64ToString, DecodeB64ToUint8Array } from "@/lib/shared/base64";
 
 // Tries to submit an application and returns true if it was possible. Called by the user.
 export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id, userId: id): Promise<boolean> {
-    request.CV = EncodeB64(request.CV);
-
     const response: Response = await fetch(`/api/application?jobId=${jobId}&userId=${userId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
