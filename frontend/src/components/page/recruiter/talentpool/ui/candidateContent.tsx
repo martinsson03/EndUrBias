@@ -43,7 +43,7 @@ export default function CandidateContent({ job }: CandidateContentProps) {
                 <RealCv cv={application.CV}></RealCv>
 
                 <div className="flex gap-2">
-                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); success && closeDialog(); }}>Remove candidate</Button>
+                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); if(success) { setApplications(prev => prev ? prev.filter(a => a.id !== application.id) : null); closeDialog(); } }}>Remove candidate</Button>
                 </div>
             </div>
         );
