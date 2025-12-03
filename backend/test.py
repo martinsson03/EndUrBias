@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build base URL from env
-python_port = os.getenv("PYTHON_PORT", "8000")
+python_port = os.getenv("PYTHON_PORT", "8001")
 BASE_URL = f"http://localhost:{python_port}"
 URL = BASE_URL.rstrip("/") + "/anonymize"
 PDF_FILE_PATH = os.getenv("PDF_FILE_PATH")
@@ -32,7 +32,7 @@ payload = {
 }
 
 # Send POST request
-response = requests.post(URL, json=payload, timeout=60)
+response = requests.post(URL, json=payload, timeout=600)
 
 print("Status:", response.status_code)
 
