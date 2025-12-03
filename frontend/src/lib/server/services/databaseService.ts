@@ -1,18 +1,14 @@
 // The database service that will be used to make queries.
 
 import { Pool, PoolClient, QueryResult } from "pg";
-import dotenv from "dotenv";
-
-// Load environment variables.
-dotenv.config();
 
 // Define the pool of connections that can make request to the database.
 const pool: Pool = new Pool({
-    user: process.env.DB_USER ?? "",
-    host: process.env.DB_HOST ?? "",
-    database: process.env.DB_NAME ?? "",
-    password: process.env.DB_PASSWORD ?? "",
-    port: Number(process.env.DB_PORT) ?? 5000
+    user: process.env.POSTGRES_USER || "postgres",
+    host: process.env.POSTGRES_HOST || "localhost",
+    database: process.env.POSTGRES_DB || "postgres",
+    password: process.env.POSTGRES_PASSWORD || "postgres",
+    port: process.env.POSTGRES_PORT ? Number(process.env.POSTGRES_PORT) : 5432
 });
 
 // Verifies the connection to the postgres db server.
@@ -27,6 +23,15 @@ async function verifyConnection(): Promise<void> {
     }
 }
 
+// Log all the configurations before running!
+console.log("DB config from environment variables: ", {
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
+});
+
 await verifyConnection(); // Verify before continuing!
 
 // Get an sql client from the pool.
@@ -40,7 +45,7 @@ export async function ReleaseSqlClient(client: PoolClient): Promise<void> {
 }
 
 // Function for making a sql query and returning the object.
-export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | undefined> {
+export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | null> {
     const client = await GetSqlClient();
 
     try {
@@ -49,9 +54,9 @@ export async function MakeSqlQuery<T>(sqlQuery: string): Promise<T[] | undefined
         return response.rows as T[]; // Try to cast it to the type T!
     }
     catch (error: any) {
-        console.error("Error when creating querying the db: ", error.message || error);
+        console.error("Error when querying the db: ", error.message || error);
 
-        return undefined; // If any errors occured, return undefined.
+        return null; // If any errors occured, return null.
     }
     finally {
         await ReleaseSqlClient(client); // Release the resource.

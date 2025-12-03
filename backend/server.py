@@ -17,8 +17,10 @@ class AnonymizeResponse(BaseModel):
 def root():
     return {"status": "API running", "endpoint": "/anonymize"}
 
-@app.post("/anonymize", response_model=AnonymizeResponse)
-def anonymise(request: AnonymizeRequest):
+class CVTextRequest(BaseModel):
+    cvBase64: str
+@app.post("/anonymize")
+def anonymise(request: CVTextRequest):
     try:
         decoded_bytes = base64.b64decode(request.cvBase64)
         anonymized_bytes = anonymize_pdf_with_llm(decoded_bytes)

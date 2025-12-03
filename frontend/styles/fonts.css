@@ -6,6 +6,11 @@
     src: url("/fonts/RobotoCondensed-VariableFont_wght.ttf");
 }
 
+/* For all classes that has this, give padding bottom, only and only if, the next element is not a <p>! */
+.text-seperator:has(+ *:not(p)) {
+    @apply pb-3;
+}
+
 /* Make sure tailwind generate the utility class for the custom font. */
 @theme static {
     --font-custom: "Custom";

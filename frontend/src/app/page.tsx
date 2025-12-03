@@ -1,18 +1,29 @@
-"use client"
+"use client";
 
-import LoginRedirectCard from "@/components/ui/loginRedirectCard"
+import { PageContentContainer } from "@/components/ui/pageContentContainer";
 
-// Home page will be the welcoming page.
 export default function Home() {
-  return (
-    <div className="flex flex-col items-center p-10 gap-5">
-      <h1 className="text-center">End Your Bias</h1>
-      <p className="text-center text-secondary-foreground max-w-3xl">Our innovative recruiter tool leverages AI to create a fairer, more objective hiring process by removing identifying details that could introduce bias. Critical information such as name, gender, ethnicity, and origin is automatically anonymized, allowing recruiters to evaluate candidates solely on skills, experience, and qualifications. By focusing on merit rather than personal characteristics, this tool helps organizations build more diverse, inclusive, and equitable teams.</p>
+  function handleLogin() {
+    const authUrl = new URL("http://localhost:8002/login");
+    authUrl.searchParams.set("client_id", "eyb-frontend");
+    authUrl.searchParams.set(
+      "redirect_uri",
+      "http://localhost:8000/auth/callback"
+    );
 
-      <div className="flex flex-row gap-10 pt-10">
-        <LoginRedirectCard signInAs="User" redirectUrl="/user"></LoginRedirectCard>
-        <LoginRedirectCard signInAs="Recruiter" redirectUrl="/recruiter"></LoginRedirectCard>
-      </div>
-    </div>
-  )
+    window.location.href = authUrl.toString();
+  }
+
+  return (
+    <PageContentContainer className="flex flex-col items-center mt-10 gap-5">
+      <h1 className="text-center">End Your Bias</h1>
+
+      <button
+        onClick={handleLogin}
+        className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+      >
+        Logga in
+      </button>
+    </PageContentContainer>
+  );
 }
