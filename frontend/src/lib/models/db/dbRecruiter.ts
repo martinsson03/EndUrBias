@@ -3,6 +3,6 @@ import IdentifiableObject from "../shared/identifiableObject";
 
 // Recruiter as seen in the recruiter table.
 export default interface Recruiter extends IdentifiableObject {
-    UserId: id,   // Foreign key mapping this recruiter to the correct user.
-    CompanyId: id // Foreign key mapping this recruiter to the correct company.
+    userid: id,   // Foreign key mapping this recruiter to the correct user.
+    companyid: id // Foreign key mapping this recruiter to the correct company.
 };

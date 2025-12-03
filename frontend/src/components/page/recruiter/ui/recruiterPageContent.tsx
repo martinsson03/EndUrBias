@@ -11,7 +11,7 @@ export default function RecruiterPageContent() {
 
     useEffect(() => {
         async function getJobs() {
-            const objects = await GetJobsCreatedByRecruiter("666");
+            const objects = await GetJobsCreatedByRecruiter("666666666666666666666666666666666666");
 
             setJobs(objects);
         }

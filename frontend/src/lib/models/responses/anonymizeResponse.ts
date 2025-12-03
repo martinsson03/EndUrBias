@@ -1,6 +1,4 @@
-import IdentifiableObject from "../shared/identifiableObject";
-
 // The response body when requesting censoring of cv.
-export default interface AnonymizeResponse extends IdentifiableObject {
-    cv: string
+export default interface AnonymizeResponse {
+    cvBase64: string
 }

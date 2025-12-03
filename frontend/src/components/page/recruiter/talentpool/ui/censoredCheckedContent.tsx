@@ -33,7 +33,7 @@ export default function CensoredCheckedContent({ job }: CensoredCheckedContentPr
 
     function cvDialog(application: CensoredCVViewModel) {
         return (
-            <div className="flex flex-col gap-4 pt-4">
+            <div className="flex flex-col gap-4 pt-4 overflow-y-auto w-full">
                 <div className="flex justify-center items-center gap-3">
                     <h6 className="text-secondary-foreground">Identifier:</h6>
                     <Input disabled={true} className="w-100 text-center" value={application.id}></Input>
@@ -43,7 +43,7 @@ export default function CensoredCheckedContent({ job }: CensoredCheckedContentPr
                 <CensoredCv cv={application.CensoredCV}></CensoredCv>
 
                 <div className="flex gap-2">
-                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); success && closeDialog(); }}>Request real CV</Button>
+                    <Button onClick={async () => { let success = await ChangeApplicationState(false, application.id); if(success) { setApplications(prev => prev ? prev.filter(a => a.id !== application.id) : null); closeDialog(); } }}>Request real CV</Button>
                 </div>
             </div>
         );
@@ -51,8 +51,8 @@ export default function CensoredCheckedContent({ job }: CensoredCheckedContentPr
     
     return (
         <PaginatedContainer columns={5}>
-            { applications && applications.map((app, i) => (
-                <Card key={i} className="hover:cursor-pointer p-2" onClick={() => openDialog("", "", cvDialog(app))}>
+            { applications && applications.length > 0 && applications.map((app, i) => (
+                <Card key={i} className="hover:cursor-pointer p-2" onClick={() => openDialog("", "", cvDialog(app), "60%", "100%")}>
                     <p className="text-center">{ app.id }</p>
                 </Card>
             ))}

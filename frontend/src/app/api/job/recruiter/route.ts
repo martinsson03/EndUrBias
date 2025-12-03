@@ -2,7 +2,7 @@ import { id } from "@/lib/models/shared/id";
 import JobViewModel from "@/lib/models/view/jobViewModel";
 import { GetJobsCreatedByRecruiter } from "@/lib/server/services/jobService";
 
-// GET: api/job/recruiter?userId=<value> | Gets all jobs created by the recruiter.
+// GET: /api/job/recruiter?userId=<value> | Gets all jobs created by the recruiter.
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url);
 

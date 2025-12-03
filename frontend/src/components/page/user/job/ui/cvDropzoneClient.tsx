@@ -84,7 +84,7 @@ export function CvDropzone({ onFileChange, id, className }: CvDropzoneProps) {
 
                 <p className="text-secondary-foreground">Drag & drop your CV here</p>
 
-                <Button variant="outline" onClick={(e) => { e.stopPropagation(); openFileDialog(); }}>Browse files</Button>
+                <Button variant="outline" onClick={(e) => { e.preventDefault(); e.stopPropagation(); openFileDialog(); }}>Browse files</Button>
 
                 <input ref={inputRef} type="file" accept="application/pdf" className="hidden" onChange={handleFileChange}/>
             </div>

@@ -22,7 +22,7 @@ export default function JobDetailsFull({ job, className, children }: JobDetailsF
                     <h3 className="font-bold">{ job.Title }</h3>
                     <Link className="flex" href={`user/company/${job.CompanyId}`}><BriefcaseBusiness className="pr-1" size={25}></BriefcaseBusiness><h6 className="italic">{ job.Company }</h6></Link>
                     <h6 className="flex"><MapPin className="pr-1" size={25}></MapPin>{ job.Location } • { job.Extent }</h6>
-                    <h6 className="flex"><Clock className="pr-1" size={25}></Clock>Last apply: {job.DateOfTermination.getDay()}/{job.DateOfTermination.getMonth()} - {job.DateOfTermination.getFullYear()}</h6>
+                    <h6 className="flex"><Clock className="pr-1" size={25}></Clock>Last apply: {new Date(job.DateOfTermination).getDay()}/{new Date(job.DateOfTermination).getMonth()} - {new Date(job.DateOfTermination).getFullYear()}</h6>
                     <div className="flex gap-1 flex-wrap">
                         {job.Tags.map((tag, i) => (
                             <Badge key={i} variant="secondary">{ tag }</Badge>

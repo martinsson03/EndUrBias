@@ -24,12 +24,12 @@ class AnonymizeResponse(BaseModel):
 def read_root():
     return HTTPException(status_code=400, detail="Faulty endpoint")
 
+class CVTextRequest(BaseModel):
+    cvBase64: str
 @app.post("/anonymize")
-def anonymise(request: AnonymizeRequest):
+def anonymise(request: CVTextRequest):
     try:
-        decoded_bytes = base64.b64decode(request.cvBase64)
-        text = extract_text(decoded_bytes)
-
-        return AnonymizeResponse(jobId=request.jobId, cvBase64=base64.encode(text))
+        # TODO ANON
+        return CVTextRequest(cvBase64=request.cvBase64)
     except Exception as e:
         return HTTPException(status_code=400, detail=f"An error occured: {str(e)}")
