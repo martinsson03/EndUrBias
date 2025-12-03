@@ -26,6 +26,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
             dateSent,
             censoredCv,
             cv,
+            uncensored_by,
             state
         ) VALUES (
             '${userId}',
@@ -33,6 +34,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
             NOW(),
             '${anonymizedCv.cvBase64}',
             '${request.CV}',
+            'null',
             '${ApplicationState.Censored}'
         );
     `);
@@ -118,6 +120,15 @@ export async function ChangeApplicationState(requestRealCV: boolean, application
     else if (application.state === ApplicationState.Candidate) {
         newState = ApplicationState.Uncensored;
     }
+
+    if(newState == ApplicationState.Uncensored) {
+    await MakeSqlQuery(`
+        UPDATE Applications
+        SET uncensored_by = '${"666666666666666666666666666666666666"}'
+        WHERE id = '${applicationId}';
+    `);
+
+        }
 
     await MakeSqlQuery(`
         UPDATE Applications
