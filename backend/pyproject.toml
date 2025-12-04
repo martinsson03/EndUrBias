@@ -13,4 +13,5 @@ dependencies = [
     "pip>=25.3",
     "spacy-layout>=0.0.12",
     "pdf2image>=1.17.0",
+    "frontmatter>=3.0.8",
 ]
