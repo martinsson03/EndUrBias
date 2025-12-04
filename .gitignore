@@ -5,4 +5,4 @@ __pycache__
 .env
 /env
 /backend/data
-/backend/redacted_output
+/backend/output
