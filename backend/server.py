@@ -25,16 +25,16 @@ def anonymize(request: CVTextRequest):
     try:
 
         # Step 1: Decode the base64 PDF
-        #decoded_bytes = base64.b64decode(request.cvBase64)
+        decoded_bytes = base64.b64decode(request.cvBase64)
         
         # Step 2: Emmanuel's Pipeline - Extract text to Markdown
-        markdown = extract_text_to_markdown(request.cvBase64)
+        markdown = extract_text_to_markdown(decoded_bytes)
         
         # Step 3: Albin's Pipeline - Redact PII from markdown
         redacted_markdown, pii_matches = redact_text(
             markdown, 
             use_presidio=False,  # Set to True if you want Presidio
-            applicant_name= (request.firstName + " " + request.LastName),
+            applicant_name= (request.firstName + " " + request.lastName),
             use_spacy_names=False  # Set to True if you want spaCy NER
         )
         
