@@ -21,18 +21,22 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
     // Insert application into database.
     await MakeSqlQuery(`
         INSERT INTO Applications (
+            display_name,
             userId,
             jobId,
             dateSent,
             censoredCv,
             cv,
+            uncensored_by,
             state
         ) VALUES (
+         '${request.Firstname} ${request.Lastname}',
             '${userId}',
             '${jobId}',
             NOW(),
             '${anonymizedCv.cvBase64}',
             '${request.CV}',
+            'null',
             '${ApplicationState.Censored}'
         );
     `);
@@ -64,7 +68,7 @@ export async function GetUncensoredApplications(jobId: id): Promise<CvBase64[]> 
 
     if (!applications) return [];
 
-    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id, displayName: app.display_name } });
 
     return cvs;
 }
@@ -86,7 +90,7 @@ export async function GetCandidateApplications(jobId: id): Promise<CvBase64[]> {
 
     if (!applications) return [];
 
-    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id, displayName: app.display_name } });
 
     return cvs;
 }
@@ -118,6 +122,15 @@ export async function ChangeApplicationState(requestRealCV: boolean, application
     else if (application.state === ApplicationState.Candidate) {
         newState = ApplicationState.Uncensored;
     }
+
+    if(newState == ApplicationState.Uncensored) {
+    await MakeSqlQuery(`
+        UPDATE Applications
+        SET uncensored_by = '${"666666666666666666666666666666666666"}'
+        WHERE id = '${applicationId}';
+    `);
+
+        }
 
     await MakeSqlQuery(`
         UPDATE Applications
