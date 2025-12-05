@@ -34,7 +34,7 @@ def anonymize(request: CVTextRequest):
         redacted_markdown, pii_matches = redact_text(
             markdown, 
             use_presidio=False,  # Set to True if you want Presidio
-            applicant_name= (request.firstName + " " + request.LastName),
+            applicant_name= (request.firstName + " " + request.lastName),
             use_spacy_names=False  # Set to True if you want spaCy NER
         )
         
