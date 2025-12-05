@@ -3,9 +3,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-
 from dotenv import load_dotenv
-
 from extract_text import extract_text_to_markdown
 
 # python test_extract_text.py "/Users/emanuelpeterson/Code/CV/Jesper Wärn CV.pdf"
