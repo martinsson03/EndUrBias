@@ -41,6 +41,7 @@ CREATE TABLE JobPostings (
 
 CREATE TABLE Applications (
     id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+    display_name TEXT NOT NULL,
     userId CHAR(36) NOT NULL,
     jobId CHAR(36) NOT NULL,
     dateSent TIMESTAMP NOT NULL,

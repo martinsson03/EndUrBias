@@ -21,6 +21,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
     // Insert application into database.
     await MakeSqlQuery(`
         INSERT INTO Applications (
+            display_name,
             userId,
             jobId,
             dateSent,
@@ -29,6 +30,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
             uncensored_by,
             state
         ) VALUES (
+         '${request.Firstname} ${request.Lastname}',
             '${userId}',
             '${jobId}',
             NOW(),
@@ -66,7 +68,7 @@ export async function GetUncensoredApplications(jobId: id): Promise<CvBase64[]> 
 
     if (!applications) return [];
 
-    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id, displayName: app.display_name } });
 
     return cvs;
 }
@@ -88,7 +90,7 @@ export async function GetCandidateApplications(jobId: id): Promise<CvBase64[]> {
 
     if (!applications) return [];
 
-    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id } });
+    const cvs: CvBase64[] = applications.map((app: Application): CvBase64 => { return { CV: app.cv, id: app.id, displayName: app.display_name } });
 
     return cvs;
 }
