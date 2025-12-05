@@ -11,7 +11,7 @@ export default function RealCv({ cv }: RealCvProps) {
     const [pages, setPages] = useState(1);
     const containerRef = useRef<HTMLDivElement>(null);
     const [pageWidth, setPageWidth] = useState<number>(0);
-    const fileData = useMemo(() => ({ data: cv }), [cv]);
+    const fileData = useMemo(() => { const copy = cv.slice(); return { data: copy }; }, [cv]);
 
     // Measure container width.
     useEffect(() => {
