@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import base64
-from extract_text import extract_text_to_markdown
+#import base64
+from .extract_text import extract_text_to_markdown
 from pii_redactor import redact_text
-from llm_anonymizer import anonymize_pdf_with_llm
+#from llm_anonymizer import anonymize_pdf_with_llm
 
 app = FastAPI()
 
@@ -23,10 +23,10 @@ def root():
 def anonymize(request: CVTextRequest):
     try:
         # Step 1: Decode the base64 PDF
-        decoded_bytes = base64.b64decode(request.cvBase64)
+        #decoded_bytes = base64.b64decode(request.cvBase64)
         
         # Step 2: Emmanuel's Pipeline - Extract text to Markdown
-        markdown = extract_text_to_markdown(decoded_bytes)
+        markdown = extract_text_to_markdown(request.cvBase64)
         
         # Step 3: Albin's Pipeline - Redact PII from markdown
         redacted_markdown, pii_matches = redact_text(

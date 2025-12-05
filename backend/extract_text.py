@@ -1,11 +1,12 @@
 """Turn short CV PDFs into structured Markdown."""
+
 from __future__ import annotations
 import json
 import os
 from typing import Sequence
 from dotenv import load_dotenv
 from openai import OpenAI
-import pdf_extract
+from pdf_extract import extract_text 
 
 load_dotenv()
 
@@ -51,7 +52,7 @@ Important rules:
 
 
 def extract_text_to_markdown(pdf_input: bytes | str) -> str:
-    raw_text = pdf_extract.extract_text(pdf_input)
+    raw_text = extract_text(pdf_input)
     raw_text = _clean_raw_text(raw_text)
     return _format_markdown_with_llm(raw_text)
 
