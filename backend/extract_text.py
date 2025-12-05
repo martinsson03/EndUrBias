@@ -21,7 +21,7 @@ MAX_SECTIONS = 6
 
 
 SECTIONED_MD_SYSTEM_PROMPT = """You are a detail-oriented CV parser.
-You receive OCR-style text extracted from a PDF CV (often Swedish or English), together
+You receive OCR-style text extracted from a PDF CV (Swedish or English), together
 with a list of generic CV section names and a maximum number of sections.
 
 Your tasks:
@@ -81,7 +81,7 @@ def _format_markdown_with_llm(
     }
 
     completion = client.chat.completions.create(
-        model="gpt-5-mini",  # keep whatever model name you actually use in your project
+        model="gpt-5-mini", 
         messages=[
             {"role": "system", "content": SECTIONED_MD_SYSTEM_PROMPT},
             {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
