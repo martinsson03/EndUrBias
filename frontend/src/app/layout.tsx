@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -13,6 +14,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en" className="w-full h-full" suppressHydrationWarning>
       <body className="w-full h-full flex flex-col" suppressHydrationWarning>
+        <Toaster></Toaster>
         { children }
       </body>
     </html>
