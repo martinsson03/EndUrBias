@@ -25,10 +25,10 @@ def anonymize(request: CVTextRequest):
     try:
 
         # Step 1: Decode the base64 PDF
-        #decoded_bytes = base64.b64decode(request.cvBase64)
+        decoded_bytes = base64.b64decode(request.cvBase64)
         
         # Step 2: Emmanuel's Pipeline - Extract text to Markdown
-        markdown = extract_text_to_markdown(request.cvBase64)
+        markdown = extract_text_to_markdown(decoded_bytes)
         
         # Step 3: Albin's Pipeline - Redact PII from markdown
         redacted_markdown, pii_matches = redact_text(
@@ -39,7 +39,7 @@ def anonymize(request: CVTextRequest):
         )
         
         return AnonymizeResponse(
-            markdown=redacted_markdown  # Send back redacted markdown
+            markdown=base64.b64encode(redacted_markdown)  # Send back redacted markdown as base 64.
         )
     except Exception as e:
         print(f"Error during anonymization: {str(e)}")
