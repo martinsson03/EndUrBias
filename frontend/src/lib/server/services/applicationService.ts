@@ -22,7 +22,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
     await MakeSqlQuery(`
         INSERT INTO Applications (
             display_name,
-            userId
+            userId,
             jobId,
             dateSent,
             censoredCv,

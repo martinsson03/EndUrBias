@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-#import base64
-from .extract_text import extract_text_to_markdown
+import base64
+from extract_text import extract_text_to_markdown
 from pii_redactor import redact_text
 #from llm_anonymizer import anonymize_pdf_with_llm
 
@@ -39,7 +39,7 @@ def anonymize(request: CVTextRequest):
         )
         
         return AnonymizeResponse(
-            markdown=base64.b64encode(redacted_markdown)  # Send back redacted markdown as base 64.
+            markdown=base64.b64encode(redacted_markdown.encode("utf-8")).decode("ascii")
         )
     except Exception as e:
         print(f"Error during anonymization: {str(e)}")
