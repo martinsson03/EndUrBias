@@ -13,7 +13,6 @@ class CVTextRequest(BaseModel):
     LastName: str
 
 class AnonymizeResponse(BaseModel):
-    cvBase64: str
     markdown: str  # Optional: include the markdown in response if needed
 
 @app.get("/")
