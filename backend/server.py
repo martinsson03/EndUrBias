@@ -37,14 +37,7 @@ def anonymize(request: CVTextRequest):
             use_spacy_names=False  # Set to True if you want spaCy NER
         )
         
-        # Step 4: Use LLM anonymizer to redact the original PDF
-        anonymized_pdf_bytes = anonymize_pdf_with_llm(decoded_bytes)
-        
-        # Step 5: Encode the anonymized PDF back to base64
-        encoded = base64.b64encode(anonymized_pdf_bytes).decode("utf-8")
-        
         return AnonymizeResponse(
-            cvBase64=encoded,
             markdown=redacted_markdown  # Send back redacted markdown
         )
     except Exception as e:
