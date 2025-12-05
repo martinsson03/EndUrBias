@@ -52,7 +52,8 @@ export async function GetUncensoredApplications(jobId: id): Promise<CVViewModel[
     return uncensoredCvs.map(cv => (
         { 
             id: cv.id, 
-            CV: DecodeB64ToUint8Array(cv.CV) 
+            CV: DecodeB64ToUint8Array(cv.CV),
+            displayname: cv.displayName
         }));
 }
 

@@ -9,6 +9,8 @@ import { SubmitApplication } from "@/lib/client/services/applicationService";
 import ApplicationSubmitRequest from "@/lib/models/requests/applicationSubmitRequest";
 import { id } from "@/lib/models/shared/id";
 import { EncodeB64FromUint8Array } from "@/lib/shared/base64";
+import { Spinner } from "@/components/shadcn/ui/spinner";
+import { toast } from "sonner";
 
 type ApplyJobClientProps = {
     id?: string,
@@ -25,10 +27,13 @@ export default function ApplyJobClient({ id, jobId, userId }: ApplyJobClientProp
     const [email, setEmail]         = useState("");
     const [phone, setPhone]         = useState("");
     const [cv, setCv]               = useState<File | null>(null);
+    const [loading, setLoading]     = useState<boolean>(false);
 
     // When you have submitted the form, this will run.
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault(); // Prevent the framework from taking further actions.
+
+        setLoading(true);
 
         let cvB64: string = "";
 
@@ -44,6 +49,11 @@ export default function ApplyJobClient({ id, jobId, userId }: ApplyJobClientProp
         };
 
         const success = await SubmitApplication(request, jobId, userId);
+
+        if (success) toast.success("An application was submitted!");
+        else toast.error("Couldn't submit the application!");
+
+        setLoading(false);
     }
     
     return (
@@ -91,7 +101,8 @@ export default function ApplyJobClient({ id, jobId, userId }: ApplyJobClientProp
                 </div>
 
                 <div className="flex justify-center">
-                    <Button className="max-w-70 grow">Submit</Button>
+                    { !loading && <Button className="max-w-70 grow">Submit</Button> }
+                    { loading && <Spinner></Spinner> }
                 </div>
             </form>
         </div>

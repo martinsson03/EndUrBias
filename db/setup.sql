@@ -41,11 +41,13 @@ CREATE TABLE JobPostings (
 
 CREATE TABLE Applications (
     id CHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+    display_name TEXT NOT NULL,
     userId CHAR(36) NOT NULL,
     jobId CHAR(36) NOT NULL,
     dateSent TIMESTAMP NOT NULL,
     censoredCv TEXT NOT NULL,
     cv TEXT NOT NULL,
+    uncensored_by TEXT,
     state TEXT NOT NULL CHECK (state IN ('Censored', 'Viewed', 'Uncensored', 'Candidate')),
     FOREIGN KEY (userId) REFERENCES Users(id),
     FOREIGN KEY (jobId) REFERENCES JobPostings(id)
