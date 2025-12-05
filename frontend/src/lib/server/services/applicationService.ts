@@ -16,7 +16,7 @@ import CensoredCvBase64 from "@/lib/models/shared/censoredCv";
 export async function SubmitApplication(request: ApplicationSubmitRequest, jobId: id, userId: id): Promise<boolean> {
     const anonymizedCv: AnonymizeResponse = await CensorCV(request);
 
-    if (!anonymizedCv || typeof anonymizedCv.cvBase64 !== "string") return false;
+    if (!anonymizedCv || typeof anonymizedCv.markdown !== "string") return false;
 
     // Insert application into database.
     await MakeSqlQuery(`
@@ -34,7 +34,7 @@ export async function SubmitApplication(request: ApplicationSubmitRequest, jobId
             '${userId}',
             '${jobId}',
             NOW(),
-            '${anonymizedCv.cvBase64}',
+            '${anonymizedCv.markdown}',
             '${request.CV}',
             'null',
             '${ApplicationState.Censored}'

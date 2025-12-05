@@ -10,11 +10,11 @@ export async function CensorCV(request: ApplicationSubmitRequest): Promise<Anony
 
     const endpoint: string = rawEndpoint === undefined ? "" : rawEndpoint;
     const port: string     = rawPort === undefined ? "" : rawPort;
-
+    console.log("fE" + request);
     const response: Response = await fetch(`http://${endpoint}:${port}/anonymize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvBase64: request.CV })
+        body: JSON.stringify({ cvBase64: request.CV, "firstName": request.Firstname, "lastName": request.Lastname })
     });
 
     const anonymizeResponse: AnonymizeResponse = await response.json();
