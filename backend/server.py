@@ -13,7 +13,7 @@ class CVTextRequest(BaseModel):
     lastName: str
 
 class AnonymizeResponse(BaseModel):
-    markdown: str  # Optional: include the markdown in response if needed
+    markdown: str
 
 @app.get("/")
 def root():
@@ -23,14 +23,11 @@ def root():
 def anonymize(request: CVTextRequest):
     print("Anonymization request received." + str(request))
     try:
-
-        # Step 1: Decode the base64 PDF
-        #decoded_bytes = base64.b64decode(request.cvBase64)
         
-        # Step 2: Emmanuel's Pipeline - Extract text to Markdown
+        # Extract text to Markdown
         markdown = extract_text_to_markdown(request.cvBase64)
         
-        # Step 3: Albin's Pipeline - Redact PII from markdown
+        # Redact PII from markdown
         redacted_markdown, pii_matches = redact_text(
             markdown, 
             use_presidio=False,  # Set to True if you want Presidio

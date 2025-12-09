@@ -39,13 +39,13 @@ class PIIMatch:
 class PatternRedactor:
     """Core pattern-based PII detection - simple and reliable"""
     
-    # All patterns defined here - ORDER MATTERS (more specific first)
+    # All patterns defined here
     PATTERNS = {
         PIIType.EMAIL: r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b',
         PIIType.SSN_SWEDISH: r'\b(?:19|20)?\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[-+]?\d{4}\b',
-        # Phone numbers - handles multiple Swedish formats flexibly
+        # Phone numbers
         PIIType.PHONE: (
-            # International format with +46 or 0046 (with optional parentheses)
+            # International format with +46 or 0046
             r'(?:\(?\+46\)?|\(?0046\)?)[\s\-]?'
             r'(?:'
                 # Format: +46 7X XXX XX XX or +46 XX XXX XX XX
@@ -55,7 +55,7 @@ class PatternRedactor:
                 # No spaces: +46 7XXXXXXXX or +46 XXXXXXXXX
                 r'[0-9]{8,10}'
             r')|'
-            # Swedish national format starting with 0
+            # Format starting with 0
             r'0'
             r'(?:'
                 # Format: 07X XXX XX XX or 0XX XXX XX XX
@@ -64,10 +64,10 @@ class PatternRedactor:
                 r'[1-9][0-9]{7,9}'
             r')'
         ),
-        # Postal codes - but NOT as part of phone numbers
+        # Postal codes
         PIIType.POSTAL_CODE: r'(?<![0-9\(\)])(?<!\+46[\s\-])(?<!0046[\s\-])\d{3}\s+\d{2}(?!\d)',
         PIIType.URL: r'\bhttps?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+\b',
-        # Swedish street addresses
+        # Street addresses
        PIIType.ADDRESS: (
             r'\b[A-ZÅÄÖa-zåäö]+(?:gata|gatan|väg|vägen|gränd|gränden|allé|allén|torg|torget|gärde|gärdet)[\s\-]+\d{1,4}\b'
         ),
@@ -114,11 +114,11 @@ class PatternRedactor:
 class PresidioRedactor:
     """Optional Presidio integration for enhanced detection"""
     
-    def __init__(self, language: str = "en"):  # Changed to English by default
+    def __init__(self, language: str = "en"):  # English by default (No Swedish support)
         try:
             from presidio_analyzer import AnalyzerEngine
             
-            # Initialize Presidio with English by default
+            # Initialize Presidio
             self.analyzer = AnalyzerEngine()
             self.language = "en"
             
@@ -149,7 +149,7 @@ class PresidioRedactor:
             return []
         
         try:
-            # Always use English - it's what Presidio supports best
+            # Always use English
             results = self.analyzer.analyze(
                 text=text,
                 language="en",
@@ -426,7 +426,7 @@ class NameDetector:
         if len(text) < 3 or len(text) > 50:
             return False
         
-        # Should not contain numbers or special chars (except åäö and hyphens)
+        # Should not contain numbers or special chars
         if re.search(r'[0-9@#$%^&*()+=\[\]{};:"|<>?/\\]', text):
             return False
         
